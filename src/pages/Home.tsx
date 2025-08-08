@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Building2, Users, Award, TrendingUp, CheckCircle, Star, Play, Sparkles, Zap, Shield, Globe, Home as HomeIcon } from 'lucide-react';
+import { ArrowRight, Building2, Users, Award, TrendingUp, CheckCircle, Star, Play, Sparkles, Zap, Shield, Globe, Home as HomeIcon, Lightbulb, Palette, Rocket, Search, Code } from 'lucide-react';
 
 interface Service {
   id: number;
@@ -19,7 +19,7 @@ interface Service {
 const Home: React.FC = () => {
   const stats = [
     { 
-      number: '200+', 
+      number: '20+', 
       label: 'المشاريع المنجزة', 
       icon: Building2,
       color: 'from-blue-600 to-blue-700'
@@ -162,7 +162,7 @@ const Home: React.FC = () => {
 
   const achievements = [
     {
-      title: 'شريك رؤية 2030',
+      title: 'متماشون مع رؤية 2030',
       description: 'مساهم رسمي في تحقيق أهداف رؤية المملكة 2030',
       icon: Globe,
       value: '$2.5B+',
@@ -182,6 +182,37 @@ const Home: React.FC = () => {
       value: '100%',
       metric: 'معدل الأمان'
     }
+  ];
+
+  const workProcess = [
+    {
+      step: '01',
+      title: 'الاستشارة والتخطيط',
+      description: 'نبدأ بفهم احتياجاتك وأهدافك لوضع استراتيجية مناسبة.',
+      icon: Lightbulb,
+      color: 'text-yellow-400',
+    },
+    {
+      step: '02',
+      title: 'التصميم والتطوير',
+      description: 'نصمم ونطور موقعك باستخدام أحدث التقنيات والمعايير.',
+      icon: Palette,
+      color: 'text-blue-400',
+    },
+    {
+      step: '03',
+      title: 'الاختبار والمراجعة',
+      description: 'نختبر الموقع بدقة ونراجعه معك لضمان الجودة.',
+      icon: Search,
+      color: 'text-green-400',
+    },
+    {
+      step: '04',
+      title: 'الإطلاق والدعم',
+      description: 'نطلق موقعك ونقدم الدعم المستمر لضمان نجاحه.',
+      icon: Rocket,
+      color: 'text-purple-400',
+    },
   ];
 
   return (
@@ -217,16 +248,16 @@ const Home: React.FC = () => {
             <div className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8 animate-fade-in">
               <Sparkles className="w-5 h-5 text-yellow-400 mr-2 rtl:ml-2 rtl:mr-0" />
               <span className="text-white font-medium">
-                شريك رؤية 2030 الرسمي
+                نواكب رؤية 2030
               </span>
             </div>
 
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-8 leading-tight animate-slide-up">
-              <span className="block">نبني المملكة العربية السعودية الغد</span>
+              <span className="block">نصنع المستقبل الرقمي بأيدٍ عربية</span>
             </h1>
             
             <p className="text-xl md:text-2xl lg:text-3xl text-blue-100 mb-12 max-w-5xl mx-auto leading-relaxed animate-slide-up delay-200">
-              شركة أوج الدولية للمقاولات - شريكك الموثوق في التميز الإنشائي، متماشياً مع رؤية 2030
+              إبداع ديزاين - منصة متكاملة للحلول البرمجية وتطوير المواقع، نحول أفكارك إلى تطبيقات ومواقع استثنائية تقود نجاحك الرقمي
             </p>
 
             {/* CTA Buttons */}
@@ -287,7 +318,7 @@ const Home: React.FC = () => {
               لماذا نحن
             </div>
             <h2 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-8">
-              لماذا تختار شركة أوج الدولية؟
+              لماذا تختار إبداع ديزاين؟
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto leading-relaxed">
               نجمع بين عقود من الخبرة والتكنولوجيا المتطورة لتقديم حلول إنشائية استثنائية تتماشى مع رؤية المملكة الطموحة 2030
@@ -395,6 +426,31 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* How We Work Section */}
+      <section className="py-20 bg-white dark:bg-gray-900">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">كيف نعمل</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">عملية واضحة ومنظمة لضمان تحقيق أفضل النتائج</p>
+          </div>
+          <div className="relative">
+            <div className="hidden md:block absolute top-1/2 left-0 w-full h-1 bg-gray-200 dark:bg-gray-700 -translate-y-1/2"></div>
+            <div className="grid md:grid-cols-4 gap-12">
+              {workProcess.map((item, index) => (
+                <div key={index} className="text-center relative bg-gray-50 dark:bg-gray-800 p-8 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300">
+                  <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 bg-white dark:bg-gray-900 border-4 border-gray-200 dark:border-gray-700`}>
+                    {React.createElement(item.icon, { className: `w-10 h-10 ${item.color}` })}
+                  </div>
+                  <span className="absolute -top-4 -right-4 bg-blue-600 text-white font-bold text-lg w-12 h-12 flex items-center justify-center rounded-full border-4 border-white dark:border-gray-900">{item.step}</span>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">{item.title}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">{item.description}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Achievements Section */}
       <section className="py-32 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -461,20 +517,19 @@ const Home: React.FC = () => {
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          {/* Badge */}
           <div className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 mb-8">
             <Star className="w-5 h-5 text-yellow-400 mr-2 rtl:ml-2 rtl:mr-0" />
             <span className="text-white font-medium">
-              انضم إلى 150+ عميل راضٍ
+              انضم إلى 20+ عميل راضٍ
             </span>
           </div>
-
+ 
           <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-8 leading-tight">
             مستعد لبناء رؤيتك؟
           </h2>
           
           <p className="text-xl md:text-2xl text-blue-100 mb-12 max-w-4xl mx-auto leading-relaxed">
-            انضم إلى مئات العملاء الراضين الذين يثقون بشركة أوج الدولية لاحتياجاتهم الإنشائية. دعنا نحول مشروعك إلى واقع بخبرتنا والتزامنا بالتميز.
+            انضم إلى مئات العملاء الراضين الذين يثقون بإبداع ديزاين لاحتياجاتهم الرقمية. دعنا نحول مشروعك إلى واقع بخبرتنا والتزامنا بالتميز.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">

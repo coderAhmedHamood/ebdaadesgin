@@ -294,42 +294,7 @@ const Contact: React.FC = () => {
         </div>
       </section>
 
-      {/* Map Section */}
-      <section className="py-20 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              {t('visitOurOffice')}
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400">
-              {t('locatedInRiyadh')}
-            </p>
-          </div>
-
-          <div className="bg-white dark:bg-gray-900 rounded-3xl shadow-xl overflow-hidden">
-            <div className="h-96 bg-gradient-to-br from-blue-100 to-gray-100 dark:from-blue-900/20 dark:to-gray-800 flex items-center justify-center">
-              <div className="text-center">
-                <MapPin className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                  {t('awjHeadquarters')}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  King Fahd Road, Business District<br />
-                  Riyadh 12345, Saudi Arabia
-                </p>
-                <a
-                  href="https://maps.google.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-block mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors duration-300"
-                >
-                  {t('viewOnGoogleMaps')}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+    
 
       {/* Quick Contact */}
       <section className="py-20 bg-gradient-to-r from-blue-900 to-gray-900 text-white">

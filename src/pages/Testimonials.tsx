@@ -158,7 +158,7 @@ const Testimonials: React.FC = () => {
             شهادات عملائنا
           </h1>
           <p className="text-xl md:text-2xl text-green-100 max-w-4xl mx-auto">
-            اكتشف ما يقوله عملاؤنا عن تجربتهم مع شركة أوج الدولية
+            اكتشف ما يقوله عملاؤنا عن تجربتهم مع إبداع ديزاين
           </p>
         </div>
       </section>
@@ -391,7 +391,7 @@ const Testimonials: React.FC = () => {
             انضم إلى عملائنا الراضين
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
-            اختبر الفرق مع شركة أوج الدولية واكتشف لماذا يثق بنا العملاء في جميع أنحاء المملكة
+            اختبر الفرق مع إبداع ديزاين واكتشف لماذا يثق بنا العملاء في جميع أنحاء العالم العربي
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <a

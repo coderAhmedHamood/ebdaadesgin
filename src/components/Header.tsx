@@ -35,7 +35,7 @@ const Header: React.FC = () => {
             </div>
             <div className="hidden md:block">
               <div className="text-xl font-bold text-gray-900 dark:text-white">
-                أوج الدولية
+                إبداع ديزاين
               </div>
               <div className="text-sm text-blue-600 dark:text-blue-400 font-medium">
                 {t('tagline')}

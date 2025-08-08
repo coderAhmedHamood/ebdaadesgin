@@ -37,7 +37,7 @@ const AdminLogin: React.FC = () => {
           <div className="w-20 h-20 bg-gradient-to-br from-blue-600 to-blue-800 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-2xl">
             <Building className="w-10 h-10 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">لوحة تحكم أوج الدولية</h1>
+          <h1 className="text-3xl font-bold text-white mb-2">لوحة تحكم إبداع ديزاين</h1>
           <p className="text-blue-200">دخول آمن لإدارة المحتوى</p>
         </div>
 
@@ -125,7 +125,7 @@ const AdminLogin: React.FC = () => {
         {/* Footer */}
         <div className="text-center mt-8">
           <p className="text-blue-300 text-sm">
-            © 2024 شركة أوج الدولية للمقاولات
+            © 2024 إبداع ديزاين
           </p>
         </div>
       </div>

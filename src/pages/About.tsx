@@ -1,73 +1,49 @@
 import React from 'react';
-import { Award, Users, Target, Globe, Heart, Lightbulb } from 'lucide-react';
+import { Award, Users, Target, Globe, Heart, Lightbulb, ShieldCheck, Timer, Leaf } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const About: React.FC = () => {
   const { t } = useLanguage();
 
-  const values = [
-    {
-      icon: Award,
-      title: t('excellence'),
-      description: t('excellenceDesc')
-    },
-    {
-      icon: Heart,
-      title: t('integrity'),
-      description: t('integrityDesc')
-    },
-    {
-      icon: Lightbulb,
-      title: t('innovation'),
-      description: t('innovationDesc')
-    },
-    {
-      icon: Users,
-      title: t('collaboration'),
-      description: t('collaborationDesc')
-    },
-    {
-      icon: Target,
-      title: t('reliability'),
-      description: t('reliabilityDesc')
-    },
-    {
-      icon: Globe,
-      title: t('sustainability'),
-      description: t('sustainabilityDesc')
-    }
+  const coreValues = [
+    { icon: Award, title: t('excellence'), description: t('excellenceDesc') },
+    { icon: ShieldCheck, title: t('integrity'), description: t('integrityDesc') },
+    { icon: Lightbulb, title: t('innovation'), description: t('innovationDesc') },
+    { icon: Users, title: t('collaboration'), description: t('collaborationDesc') },
+    { icon: Timer, title: t('reliability'), description: t('reliabilityDesc') },
+    { icon: Leaf, title: t('sustainability'), description: t('sustainabilityDesc') },
   ];
 
   const timeline = [
     {
-      year: '2000',
-      title: t('companyFounded'),
-      description: t('timelineFoundedDesc')
-    },
-    {
-      year: '2005',
-      title: t('firstMajorProject'),
-      description: t('timelineFirstProjectDesc')
-    },
-    {
-      year: '2010',
-      title: t('regionalExpansion'),
-      description: t('timelineExpansionDesc')
-    },
-    {
-      year: '2015',
-      title: t('innovationLeadership'),
-      description: t('timelineInnovationDesc')
-    },
-    {
       year: '2020',
-      title: t('vision2030Partner'),
-      description: t('timelineVision2030Desc')
+      title: t('timeline2020Title'),
+      description: t('timeline2020Desc')
+    },
+    {
+      year: '2021',
+      title: t('timeline2021Title'),
+      description: t('timeline2021Desc')
+    },
+    {
+      year: '2022',
+      title: t('timeline2022Title'),
+      description: t('timeline2022Desc')
+    },
+    {
+      year: '2023',
+      title: t('timeline2023Title'),
+      description: t('timeline2023Desc')
     },
     {
       year: '2024',
-      title: t('industryLeader'),
-      description: t('timelineLeaderDesc')
+      title: t('timeline2024Title'),
+      description: t('timeline2024Desc')
+    },
+    {
+      year: '2026',
+      title: t('timeline2026Title'),
+      description: t('timeline2026Desc')
     }
   ];
 
@@ -86,11 +62,11 @@ const About: React.FC = () => {
               </p>
               <div className="grid grid-cols-2 gap-6">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-400 mb-2">24+</div>
+                  <div className="text-3xl font-bold text-yellow-400 mb-2">5+</div>
                   <div className="text-blue-100">{t('yearsExperience')}</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-yellow-400 mb-2">200+</div>
+                  <div className="text-3xl font-bold text-yellow-400 mb-2">20+</div>
                   <div className="text-blue-100">{t('projectsCompleted')}</div>
                 </div>
               </div>
@@ -136,33 +112,21 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Values */}
+      {/* Core Values Section */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              {t('coreValues')}
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              {t('coreValuesDescription')}
-            </p>
+          <div className="text-center">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">{t('coreValues')}</h2>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">{t('coreValuesDescription')}</p>
           </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {values.map((value, index) => (
-              <div
-                key={index}
-                className="group p-8 bg-white dark:bg-gray-900 rounded-3xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 dark:border-gray-700"
-              >
-                <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <value.icon className="w-8 h-8 text-white" />
+          <div className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+            {coreValues.map((value, index) => (
+              <div key={index} className="bg-white dark:bg-gray-900 p-8 rounded-2xl shadow-lg hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 flex flex-col items-center text-center">
+                <div className="flex items-center justify-center h-20 w-20 rounded-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white mb-6 shadow-lg">
+                  <value.icon className="h-10 w-10" />
                 </div>
-                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-                  {value.title}
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                  {value.description}
-                </p>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">{value.title}</h3>
+                <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{value.description}</p>
               </div>
             ))}
           </div>
@@ -226,64 +190,38 @@ const About: React.FC = () => {
         </div>
       </section>
 
-      {/* Statistics */}
+       
       <section className="py-20 bg-gradient-to-r from-blue-900 to-gray-900 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-4xl font-bold mb-6">
-              {t('awjByNumbers')}
+            {t('readyToBuild')}
             </h2>
             <p className="text-xl text-blue-100 max-w-3xl mx-auto">
-              {t('achievementsDescription')}
+            {t('experienceTheDifference')}
             </p>
           </div>
-
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-5xl font-bold text-yellow-400 mb-4">200+</div>
-              <div className="text-blue-100 text-lg">{t('projectsCompleted')}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-bold text-yellow-400 mb-4">150+</div>
-              <div className="text-blue-100 text-lg">{t('happyClients')}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-bold text-yellow-400 mb-4">500+</div>
-              <div className="text-blue-100 text-lg">{t('expertEmployees')}</div>
-            </div>
-            <div className="text-center">
-              <div className="text-5xl font-bold text-yellow-400 mb-4">24</div>
-              <div className="text-blue-100 text-lg">{t('yearsOfExcellence')}</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Call to Action */}
-      <section className="py-20 bg-white dark:bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-            {t('readyToBuild')}
-          </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-400 mb-8 max-w-3xl mx-auto">
-            {t('experienceTheDifference')}
-          </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
-            <a
-              href="/contact"
-              className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-2xl hover:shadow-blue-500/25 transform hover:-translate-y-1"
-            >
-              {t('getInTouch')}
-            </a>
-            <a
-              href="/projects"
-              className="px-8 py-4 bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white font-semibold rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
-            >
-              {t('viewOurWork')}
-            </a>
-          </div>
+                <a
+                  href="/contact"
+                  className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-semibold rounded-xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-2xl hover:shadow-yellow-500/25 transform hover:-translate-y-1 text-lg"
+                >
+                  {t('getInTouch')}
+                </a>
+                <a
+                  href="/projects"
+                  className="px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-300 border border-white/20 hover:border-white/30 text-lg"
+                >
+                  {t('viewOurWork')}
+                </a>
+              </div>
+
+
+          
         </div>
       </section>
+
+    
     </div>
   );
 };
