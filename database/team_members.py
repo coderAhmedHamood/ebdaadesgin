@@ -2,7 +2,7 @@ import sqlite3
 import json
 
 # فتح أو إنشاء قاعدة البيانات
-conn = sqlite3.connect('projects.db')
+conn = sqlite3.connect('../projects.db')
 cursor = conn.cursor()
 
 # إنشاء جدول الفريق
@@ -31,71 +31,69 @@ CREATE TABLE IF NOT EXISTS team_members (
 team_members = [
     {
       'id': '1',
-      'name': 'أحمد بن محمد الراشد',
-      'position': 'الرئيس التنفيذي',
-      'department': 'الإدارة العليا',
-      'bio': 'رؤيتنا تتجاوز البناء - نحن نبني الأساس لمستقبل المملكة العربية السعودية المزدهر. كل مشروع نقوم به يعكس التزامنا بالتميز وإيماننا الراسخ برؤية المملكة 2030.',
-      'email': 'ahmed.alrashid@awjcontracting.sa',
-      'phone': '+966 11 123 4567',
-      'linkedin': 'https://linkedin.com/in/ahmed-alrashid',
-      'image': 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400',
-      'experience': '25 سنة',
-      'specialty': 'القيادة الاستراتيجية',
+      'name': 'سارة الخطيب',
+      'position': 'مديرة التصميم',
+      'department': 'التصميم',
+      'bio': 'متخصصة في تصميم الواجهات وتجربة المستخدم، تجمع بين الإبداع والوظائف العملية.',
+      'email': '',
+      'phone': '',
+      'linkedin': '',
+      'image': 'https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'experience': '10 سنوات',
+      'specialty': 'تصميم واجهات وتجربة مستخدم',
       'achievements': [
-          'قاد مشاريع بناء بقيمة تزيد عن 2 مليار دولار',
-          'عضو المجلس الاستشاري لرؤية 2030',
-          'جائزة التميز الصناعي 2023'
+          'تصميم أكثر من 120 واجهة مواقع احترافية',
+          'تنفيذ مشاريع لعلامات تجارية كبرى'
       ],
-      'skills': ['القيادة الاستراتيجية', 'إدارة المشاريع الكبرى', 'التخطيط طويل المدى', 'بناء الشراكات'],
+      'skills': ['تصميم واجهات', 'UX/UI', 'التصميم المتجاوب'],
       'isActive': True,
       'order': 1,
-      'joinDate': '2000-01-15'
+      'joinDate': '2015-04-12'
     },
     {
       'id': '2',
-      'name': 'فاطمة الزهراء',
-      'position': 'مديرة العمليات',
-      'department': 'العمليات',
-      'bio': 'الابتكار والتميز التشغيلي هما حجر الأساس لنجاحنا. نستفيد من التكنولوجيا المتطورة وأفضل الممارسات لتقديم مشاريع تتجاوز التوقعات وتضع معايير جديدة للصناعة.',
-      'email': 'fatima.alzahra@awjcontracting.sa',
-      'phone': '+966 11 123 4568',
-      'linkedin': 'https://linkedin.com/in/fatima-alzahra',
-      'image': 'https://images.pexels.com/photos/3760854/pexels-photo-3760854.jpeg?auto=compress&cs=tinysrgb&w=400',
-      'experience': '20 سنة',
-      'specialty': 'إدارة العمليات',
+      'name': 'عمر الحربي',
+      'position': 'مدير تطوير المواقع',
+      'department': 'التطوير',
+      'bio': 'خبير في برمجة وتطوير المواقع باستخدام أحدث التقنيات مع تركيز على الأداء والأمان.',
+      'email': '',
+      'phone': '',
+      'linkedin': '',
+      'image': 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'experience': '12 سنة',
+      'specialty': 'تطوير مواقع آمنة وسريعة',
       'achievements': [
-          'نفذت إدارة المشاريع المدعومة بالذكاء الاصطناعي',
-          'قللت الجداول الزمنية للمشاريع بنسبة 30%',
-          'قائدة شهادة ISO 9001:2015'
+          'تطوير أنظمة متكاملة للمتاجر الإلكترونية',
+          'تحقيق سرعة تحميل أقل من ثانية في مشاريع متعددة'
       ],
-      'skills': ['إدارة العمليات', 'تحسين العمليات', 'إدارة الجودة', 'التكنولوجيا المتقدمة'],
+      'skills': ['Python', 'JavaScript', 'أمن المعلومات', 'تحسين الأداء'],
       'isActive': True,
       'order': 2,
-      'joinDate': '2004-03-20'
+      'joinDate': '2013-09-01'
     },
     {
       'id': '3',
-      'name': 'محمد بن سلمان العتيبي',
-      'position': 'مدير التكنولوجيا',
-      'department': 'التكنولوجيا',
-      'bio': 'التكنولوجيا ليست مجرد أداة - إنها ميزتنا التنافسية. نتبنى التحول الرقمي لتعزيز كفاءة البناء والسلامة والاستدامة، مما يضع شركة أوج الدولية في المقدمة في ابتكار الصناعة.',
-      'email': 'mohammed.alotaibi@awjcontracting.sa',
-      'phone': '+966 11 123 4569',
-      'linkedin': 'https://linkedin.com/in/mohammed-alotaibi',
-      'image': 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=400',
-      'experience': '18 سنة',
-      'specialty': 'تكنولوجيا البناء',
+      'name': 'ليلى العبدالله',
+      'position': 'مديرة التسويق الرقمي وإدارة المتاجر',
+      'department': 'التسويق والتشغيل',
+      'bio': 'تضع استراتيجيات تسويق مبتكرة وتدير المتاجر الإلكترونية لضمان نمو المبيعات.',
+      'email': '',
+      'phone': '',
+      'linkedin': '',
+      'image': 'https://images.pexels.com/photos/2182970/pexels-photo-2182970.jpeg?auto=compress&cs=tinysrgb&w=400',
+      'experience': '8 سنوات',
+      'specialty': 'التسويق الرقمي وإدارة المتاجر',
       'achievements': [
-          'رائد حلول المباني الذكية',
-          'خبير تنفيذ BIM',
-          'قائد تكنولوجيا البناء الأخضر'
+          'زيادة المبيعات بنسبة 150% خلال عام واحد',
+          'إدارة حملات إعلانية ناجحة لعدة قطاعات'
       ],
-      'skills': ['BIM', 'المباني الذكية', 'التحول الرقمي', 'الأتمتة'],
+      'skills': ['التسويق الرقمي', 'إدارة الحملات الإعلانية', 'تحليل البيانات'],
       'isActive': True,
       'order': 3,
-      'joinDate': '2006-07-10'
+      'joinDate': '2017-06-18'
     }
 ]
+
 
 # إدخال البيانات إلى الجدول
 for member in team_members:

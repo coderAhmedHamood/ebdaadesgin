@@ -1,6 +1,8 @@
 import express from 'express';
 import sqlite3 from 'sqlite3';
 import path from 'path';
+import fs from 'fs';
+import multer from 'multer';
 import { fileURLToPath } from 'url';
 
 // Since we are using ES modules, __dirname is not available directly.
@@ -24,6 +26,45 @@ app.use((req, res, next) => {
     } else {
         next();
     }
+});
+
+// Static serving for uploaded files and ensuring directory exists
+const uploadsRoot = path.join(__dirname, 'uploads');
+const projectUploadsDir = path.join(uploadsRoot, 'projects');
+if (!fs.existsSync(projectUploadsDir)) {
+    fs.mkdirSync(projectUploadsDir, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsRoot));
+
+// Multer configuration for project images
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, projectUploadsDir);
+    },
+    filename: function (req, file, cb) {
+        const safeOriginal = file.originalname.replace(/[^a-zA-Z0-9_.-]/g, '_');
+        const timestamp = Date.now();
+        cb(null, `${timestamp}_${safeOriginal}`);
+    }
+});
+
+const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5MB
+    fileFilter: (req, file, cb) => {
+        const allowed = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+        if (allowed.includes(file.mimetype)) cb(null, true);
+        else cb(new Error('Unsupported file type'));
+    }
+});
+
+// Upload endpoint (returns relative path)
+app.post('/api/upload', upload.single('image'), (req, res) => {
+    if (!req.file) {
+        return res.status(400).json({ error: 'No file uploaded' });
+    }
+    const relativePath = `/uploads/projects/${req.file.filename}`;
+    res.status(201).json({ path: relativePath });
 });
 
 // ================= Project Requests (Quotes) =================

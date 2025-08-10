@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { 
   Plus, 
   Edit3, 
@@ -36,6 +36,9 @@ const ProjectManager: React.FC = () => {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [selectedImageFile, setSelectedImageFile] = useState<File | null>(null);
+  const [selectedImagePreview, setSelectedImagePreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
@@ -211,33 +214,60 @@ const ProjectManager: React.FC = () => {
   };
 
   const handleSaveProject = async () => {
-    if (editingProject) {
-      // Update existing project
-      const success = await updateProject(editingProject.id, editingProject);
-      if (success) {
-        setEditingProject(null);
-        setShowAddModal(false);
+    try {
+      // 1) If a new file is selected, upload it first to get the server path
+      let uploadedImagePath: string | undefined = undefined;
+      if (selectedImageFile) {
+        const formData = new FormData();
+        formData.append('image', selectedImageFile);
+        const res = await fetch('/api/upload', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error('فشل رفع الصورة');
+        const data = await res.json();
+        uploadedImagePath = data.path;
       }
-    } else {
-      // Create new project
-      const success = await createProject(newProject as Omit<Project, 'id'>);
-      if (success) {
-        setNewProject({
-          title: '',
-          description: '',
-          category: 'commercial',
-          status: 'planning',
-          completion: 0,
-          value: '',
-          duration: '',
-          location: '',
-          client: '',
-          image: '',
-          startDate: '',
-          endDate: ''
-        });
-        setShowAddModal(false);
+
+      if (editingProject) {
+        // Update existing project
+        const payload: Partial<Project> = {
+          ...editingProject,
+          image: uploadedImagePath ? uploadedImagePath : editingProject.image,
+        };
+        const success = await updateProject(editingProject.id, payload);
+        if (success) {
+          setEditingProject(null);
+          setSelectedImageFile(null);
+          setSelectedImagePreview(null);
+          setShowAddModal(false);
+        }
+      } else {
+        // Create new project
+        const payload: Omit<Project, 'id'> = {
+          ...(newProject as Omit<Project, 'id'>),
+          image: uploadedImagePath ? uploadedImagePath : (newProject.image || ''),
+        };
+        const success = await createProject(payload);
+        if (success) {
+          setNewProject({
+            title: '',
+            description: '',
+            category: 'commercial',
+            status: 'planning',
+            completion: 0,
+            value: '',
+            duration: '',
+            location: '',
+            client: '',
+            image: '',
+            startDate: '',
+            endDate: ''
+          });
+          setSelectedImageFile(null);
+          setSelectedImagePreview(null);
+          setShowAddModal(false);
+        }
       }
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'حدث خطأ أثناء إنشاء/تحديث المشروع');
     }
   };
 
@@ -621,21 +651,39 @@ const ProjectManager: React.FC = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  رابط الصورة
+                  صورة المشروع
                 </label>
-                <input
-                  type="url"
-                  value={editingProject ? editingProject.image : newProject.image}
-                  onChange={(e) => {
-                    if (editingProject) {
-                      setEditingProject({ ...editingProject, image: e.target.value });
-                    } else {
-                      setNewProject({ ...newProject, image: e.target.value });
-                    }
-                  }}
-                  className="w-full px-3 py-2 bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-900 dark:text-white text-right"
-                  placeholder="https://example.com/image.jpg"
-                />
+                <div className="space-y-2">
+                  {(selectedImagePreview || (editingProject ? editingProject.image : newProject.image)) && (
+                    <img
+                      src={selectedImagePreview || (editingProject ? editingProject!.image : (newProject.image as string))}
+                      alt="معاينة الصورة"
+                      className="w-full h-32 object-cover rounded-lg border border-gray-200 dark:border-gray-600"
+                    />
+                  )}
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={(e) => {
+                      const file = e.target.files?.[0];
+                      if (!file) return;
+                      setSelectedImageFile(file);
+                      setSelectedImagePreview(URL.createObjectURL(file));
+                    }}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => fileInputRef.current?.click()}
+                    className="px-4 py-2 bg-gray-100 dark:bg-gray-700 border border-gray-200 dark:border-gray-600 rounded-lg text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    اختيار صورة
+                  </button>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 text-right">
+                    سيتم رفع الصورة عند الحفظ.
+                  </p>
+                </div>
               </div>
             </div>
 

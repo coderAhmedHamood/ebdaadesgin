@@ -24,7 +24,7 @@ import Services from './pages/Services';
 import Projects from './pages/Projects';
 import About from './pages/About';
 import Contact from './pages/Contact';
-import ClientRegistration from './pages/ClientRegistration';
+
 import Leadership from './pages/Leadership';
 import Testimonials from './pages/Testimonials';
 import FAQ from './pages/FAQ';
@@ -52,7 +52,7 @@ function App() {
                 <Route path="projects" element={<Projects />} />
                 <Route path="about" element={<About />} />
                 <Route path="contact" element={<Contact />} />
-                <Route path="register" element={<ClientRegistration />} />
+                
                 <Route path="leadership" element={<Leadership />} />
                 <Route path="testimonials" element={<Testimonials />} />
                 <Route path="faq" element={<FAQ />} />

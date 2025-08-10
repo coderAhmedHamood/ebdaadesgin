@@ -13,6 +13,8 @@ interface TeamMember {
   achievements: string[];
   linkedin: string;
   email: string;
+  department?: string;
+  skills?: string[];
 }
 
 const Leadership: React.FC = () => {
@@ -126,12 +128,16 @@ const Leadership: React.FC = () => {
                         <p className="text-blue-600 dark:text-blue-400 font-semibold">{leader.position}</p>
                       </div>
                       <div className="mt-6 flex justify-center space-x-4">
-                        <a href={leader.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                          <Linkedin className="w-6 h-6" />
-                        </a>
-                        <a href={`mailto:${leader.email}`} className="text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors">
-                          <Mail className="w-6 h-6" />
-                        </a>
+                        {leader.linkedin && (
+                          <a href={leader.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
+                            <Linkedin className="w-6 h-6" />
+                          </a>
+                        )}
+                        {leader.email && (
+                          <a href={`mailto:${leader.email}`} className="text-gray-500 hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                            <Mail className="w-6 h-6" />
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -144,6 +150,24 @@ const Leadership: React.FC = () => {
                     <blockquote className="relative text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed mb-8 italic">
                       "{leader.bio}"
                     </blockquote>
+                    {/* Meta badges */}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {leader.department && (
+                        <span className="px-3 py-1 text-sm rounded-full bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
+                          {leader.department}
+                        </span>
+                      )}
+                      {leader.specialty && (
+                        <span className="px-3 py-1 text-sm rounded-full bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300">
+                          {leader.specialty}
+                        </span>
+                      )}
+                      {leader.experience && (
+                        <span className="px-3 py-1 text-sm rounded-full bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                          {leader.experience}
+                        </span>
+                      )}
+                    </div>
                     <div className="mt-6">
                       <h4 className="font-semibold text-lg text-gray-800 dark:text-white mb-3 flex items-center">
                         <Award className="w-5 h-5 mr-2 text-yellow-500" />
@@ -157,6 +181,18 @@ const Leadership: React.FC = () => {
                           </li>
                         ))}
                       </ul>
+                      {leader.skills && leader.skills.length > 0 && (
+                        <div className="mt-6">
+                          <h5 className="font-semibold text-gray-800 dark:text-white mb-2">{t('skills') || 'المهارات'}</h5>
+                          <div className="flex flex-wrap gap-2">
+                            {leader.skills.map((s, idx) => (
+                              <span key={idx} className="px-3 py-1 text-sm rounded-full bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">
+                                {s}
+                              </span>
+                            ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>

@@ -28,9 +28,19 @@ const Footer: React.FC = () => {
           {/* Company Info */}
           <div className="col-span-1 lg:col-span-2">
             <div className="flex items-center space-x-3 rtl:space-x-reverse mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
+              {/* <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center">
                 <Building className="w-7 h-7 text-white" />
-              </div>
+              </div> */}
+
+<div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-800 flex items-center justify-center">
+              <img
+                src="/uploads/logo.png"
+                alt="Ebdaa Design Logo"
+                className="w-full h-full object-contain p-1"
+              />
+            </div>
+
+            
               <div>
                 <div className="text-xl font-bold">{t('companyName')}</div>
                 <div className="text-blue-400 font-medium">{t('tagline')}</div>

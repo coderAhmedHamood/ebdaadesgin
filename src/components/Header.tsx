@@ -16,7 +16,7 @@ const Header: React.FC = () => {
     { name: t('projects'), href: '/projects' },
     { name: t('about'), href: '/about' },
     { name: t('leadership'), href: '/leadership' },
-    { name: t('testimonials'), href: '/testimonials' },
+    // { name: t('testimonials'), href: '/testimonials' },
     { name: t('faq'), href: '/faq' },
     { name: t('vision2030'), href: '/vision2030' },
     { name: t('contact'), href: '/contact' },
@@ -30,9 +30,17 @@ const Header: React.FC = () => {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 space-x-reverse">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-800 rounded-xl flex items-center justify-center shadow-lg">
-              <Building className="w-7 h-7 text-white" />
+            
+            
+            <div className="w-12 h-12 rounded-xl overflow-hidden shadow-lg bg-white dark:bg-gray-800 flex items-center justify-center">
+              <img
+                src="/uploads/logo.png"
+                alt="Ebdaa Design Logo"
+                className="w-full h-full object-contain p-1"
+              />
             </div>
+
+
             <div className="hidden md:block">
               <div className="text-xl font-bold text-gray-900 dark:text-white">
                 إبداع ديزاين
@@ -63,12 +71,12 @@ const Header: React.FC = () => {
           {/* Controls */}
           <div className="flex items-center space-x-4 space-x-reverse">
             {/* Register Button */}
-            <Link
+            {/* <Link
               to="/register"
               className="hidden md:inline-flex px-6 py-2 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-medium rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
             >
               {t('register')}
-            </Link>
+            </Link> */}
 
             {/* Mobile Menu Button */}
             <button

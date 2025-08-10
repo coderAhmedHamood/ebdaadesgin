@@ -34,7 +34,7 @@ const translations = {
   
   // Company
   companyName: 'إبداع ديزاين',
-  tagline: 'التميز في البناء',
+  tagline: 'التميز في الإبداع',
   
   // Homepage
   heroTitle: 'نبني المملكة العربية السعودية الغد',

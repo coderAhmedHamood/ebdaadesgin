@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Building2, Users, Award, TrendingUp, CheckCircle, Star, Play, Sparkles, Zap, Shield, Globe, Home as HomeIcon, Lightbulb, Palette, Rocket, Search, Code, Megaphone, ShoppingCart } from 'lucide-react';
-
+import { useLanguage } from '../contexts/LanguageContext';
 interface Service {
   id: number;
   title: string;
@@ -78,6 +78,7 @@ const Home: React.FC = () => {
 
   const [services, setServices] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const { t } = useLanguage();
 
   // Function to get icon component based on icon name
   const getIconComponent = (iconName: string) => {
@@ -438,9 +439,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+   
 
-
- 
       {/* How We Work Section */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -466,7 +466,43 @@ const Home: React.FC = () => {
         </div>
       </section>
  
+   {/* Hero Section (below Digital Services) */}
+   <section className="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-gray-900 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <h1 className="text-5xl md:text-6xl font-bold mb-6">
+                {t('aboutTitle')}
+              </h1>
+              <p className="text-xl md:text-2xl text-blue-100 mb-8 leading-relaxed">
+                {t('aboutHeroDescription')}
+              </p>
+              <div className="grid grid-cols-2 gap-6">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-yellow-400 mb-2">5+</div>
+                  <div className="text-blue-100">{t('yearsExperience')}</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-yellow-400 mb-2">20+</div>
+                  <div className="text-blue-100">{t('projectsCompleted')}</div>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
+                <img
+                  src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=800"
+                  alt="AWJ International Team"
+                  className="w-full h-96 object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-blue-900/50 to-transparent"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      
       {/* Enhanced Call to Action */}
       <section className="py-32 relative overflow-hidden">
         {/* Animated Background */}
