@@ -26,6 +26,44 @@ app.use((req, res, next) => {
     }
 });
 
+// ================= Project Requests (Quotes) =================
+// Get all project requests
+app.get('/api/project-requests', (req, res) => {
+    const sql = 'SELECT * FROM project_requests ORDER BY id DESC';
+    db.all(sql, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json(rows);
+    });
+});
+
+// Create a new project request
+app.post('/api/project-requests', (req, res) => {
+    const { name, company_name, requested_services, phone, email } = req.body;
+    const sql = `INSERT INTO project_requests (name, company_name, requested_services, phone, email)
+                 VALUES (?, ?, ?, ?, ?)`;
+    const params = [
+        name || '',
+        company_name || '',
+        typeof requested_services === 'string' ? requested_services : JSON.stringify(requested_services || []),
+        phone || '',
+        email || ''
+    ];
+    db.run(sql, params, function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: 'Request created', id: this.lastID });
+    });
+});
+
+// Delete a project request
+app.delete('/api/project-requests/:id', (req, res) => {
+    const { id } = req.params;
+    db.run('DELETE FROM project_requests WHERE id = ?', [id], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: 'Not found' });
+        res.json({ message: 'Deleted' });
+    });
+});
+
 // Path to the database
 const dbPath = path.resolve(__dirname, 'projects.db');
 const db = new sqlite3.Database(dbPath, (err) => {
@@ -33,6 +71,15 @@ const db = new sqlite3.Database(dbPath, (err) => {
         console.error('Error opening database', err.message);
     } else {
         console.log('Connected to the projects database.');
+        // Ensure project_requests table exists
+        db.run(`CREATE TABLE IF NOT EXISTS project_requests (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            company_name TEXT,
+            requested_services TEXT,
+            phone TEXT,
+            email TEXT
+        )`);
     }
 });
 

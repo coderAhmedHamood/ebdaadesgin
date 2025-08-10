@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle, User, Building } from 'lucide-react';
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, User } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Contact: React.FC = () => {
@@ -8,10 +8,9 @@ const Contact: React.FC = () => {
     name: '',
     email: '',
     phone: '',
-    company: '',
-    service: '',
-    message: '',
-    budget: ''
+    reason: '',
+    otherReason: '',
+    message: ''
   });
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -23,25 +22,47 @@ const Contact: React.FC = () => {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Here you would typically handle form submission
-    console.log('Form submitted:', formData);
-    setIsSubmitted(true);
-    
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
+
+    // Build payload to match backend table project_requests
+    const payload = {
+      name: formData.name,
+      company_name: '',
+      requested_services: {
+        reason: formData.reason,
+        otherReason: formData.reason === 'سبب آخر - يرجى ذكره' ? formData.otherReason : '',
+        message: formData.message,
+      },
+      phone: formData.phone,
+      email: formData.email,
+    };
+
+    try {
+      const res = await fetch('/api/project-requests', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) throw new Error('Failed to submit');
+
+      setIsSubmitted(true);
       setFormData({
         name: '',
         email: '',
         phone: '',
-        company: '',
-        service: '',
-        message: '',
-        budget: ''
+        reason: '',
+        otherReason: '',
+        message: ''
       });
-    }, 3000);
+    } catch (error) {
+      console.error('Submission error:', error);
+      alert('حدث خطأ أثناء إرسال النموذج. الرجاء المحاولة لاحقًا.');
+    } finally {
+      // Hide success message after 3 seconds
+      setTimeout(() => setIsSubmitted(false), 3000);
+    }
   };
 
   const contactInfo = [
@@ -71,22 +92,12 @@ const Contact: React.FC = () => {
     }
   ];
 
-  const services = [
-    t('commercialConstruction'),
-    t('residentialProjects'),
-    t('industrialConstruction'),
-    t('infrastructureDevelopment'),
-    t('projectManagement'),
-    t('maintenanceSupport')
-  ];
-
-  const budgetRanges = [
-    'Under $1M',
-    '$1M - $5M',
-    '$5M - $10M',
-    '$10M - $25M',
-    '$25M - $50M',
-    'Above $50M'
+  const reasons = [
+    'استفسار عن خدمة',
+    'طلب توظيف أو عمل عن بعد',
+    'مقترح شراكة',
+    'مشكلة في الموقع',
+    'سبب آخر - يرجى ذكره'
   ];
 
   return (
@@ -165,7 +176,7 @@ const Contact: React.FC = () => {
             <div className="lg:col-span-2">
               <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl border border-gray-100 dark:border-gray-700">
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-                  {t('startYourProjectToday')}
+                  تواصل معنا
                 </h2>
 
                 {isSubmitted ? (
@@ -185,7 +196,7 @@ const Contact: React.FC = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          {t('fullName')} *
+                          الاسم *
                         </label>
                         <div className="relative">
                           <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -197,14 +208,14 @@ const Contact: React.FC = () => {
                             onChange={handleInputChange}
                             required
                             className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 text-gray-900 dark:text-white"
-                            placeholder={t('enterFullName')}
+                            placeholder="اكتب اسمك الكامل"
                           />
                         </div>
                       </div>
 
                       <div>
                         <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          {t('emailAddress')} *
+                          البريد الإلكتروني *
                         </label>
                         <div className="relative">
                           <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -216,14 +227,14 @@ const Contact: React.FC = () => {
                             onChange={handleInputChange}
                             required
                             className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 text-gray-900 dark:text-white"
-                            placeholder={t('enterEmailAddress')}
+                            placeholder="example@email.com"
                           />
                         </div>
                       </div>
 
                       <div>
                         <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          {t('phoneNumber')}
+                          رقم التواصل
                         </label>
                         <div className="relative">
                           <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -234,28 +245,26 @@ const Contact: React.FC = () => {
                             value={formData.phone}
                             onChange={handleInputChange}
                             className="w-full pl-12 pr-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 text-gray-900 dark:text-white"
-                            placeholder={t('enterPhoneNumber')}
+                            placeholder="05xxxxxxxx"
                           />
                         </div>
                       </div>
 
                       <div>
-                        <label htmlFor="service" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          {t('serviceNeeded')} *
+                        <label htmlFor="reason" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          سبب التواصل *
                         </label>
                         <select
-                          id="service"
-                          name="service"
-                          value={formData.service}
+                          id="reason"
+                          name="reason"
+                          value={formData.reason}
                           onChange={handleInputChange}
                           required
                           className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 text-gray-900 dark:text-white"
                         >
-                          <option value="">{t('selectService')}</option>
-                          {services.map((service, index) => (
-                            <option key={index} value={service}>
-                              {service}
-                            </option>
+                          <option value="">اختر السبب</option>
+                          {reasons.map((r) => (
+                            <option key={r} value={r}>{r}</option>
                           ))}
                         </select>
                       </div>
@@ -263,9 +272,26 @@ const Contact: React.FC = () => {
 
                     </div>
 
+                    {formData.reason === 'سبب آخر - يرجى ذكره' && (
+                      <div>
+                        <label htmlFor="otherReason" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          يرجى ذكر السبب
+                        </label>
+                        <input
+                          type="text"
+                          id="otherReason"
+                          name="otherReason"
+                          value={formData.otherReason}
+                          onChange={handleInputChange}
+                          className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 text-gray-900 dark:text-white"
+                          placeholder="اكتب السبب"
+                        />
+                      </div>
+                    )}
+
                     <div>
                       <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                        {t('projectDetails')} *
+                        كيف يمكننا مساعدتك؟ *
                       </label>
                       <textarea
                         id="message"
@@ -275,7 +301,7 @@ const Contact: React.FC = () => {
                         required
                         rows={6}
                         className="w-full px-4 py-3 bg-gray-50 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors duration-300 text-gray-900 dark:text-white resize-none"
-                        placeholder={t('tellUsAboutProject')}
+                        placeholder="اكتب رسالتك هنا"
                       ></textarea>
                     </div>
 
@@ -284,7 +310,7 @@ const Contact: React.FC = () => {
                       className="w-full flex items-center justify-center space-x-3 rtl:space-x-reverse px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white font-semibold rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                     >
                       <Send className="w-5 h-5" />
-                      <span>{t('sendMessage')}</span>
+                      <span>إرسال الرسالة</span>
                     </button>
                   </form>
                 )}

@@ -29,6 +29,8 @@ import Leadership from './pages/Leadership';
 import Testimonials from './pages/Testimonials';
 import FAQ from './pages/FAQ';
 import Vision2030 from './pages/Vision2030';
+import CustomQuote from './pages/CustomQuote';
+import ProjectRequestsManager from './components/admin/ProjectRequestsManager';
 
 // Admin Route Guard
 const AdminRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -55,6 +57,7 @@ function App() {
                 <Route path="testimonials" element={<Testimonials />} />
                 <Route path="faq" element={<FAQ />} />
                 <Route path="vision2030" element={<Vision2030 />} />
+                <Route path="quote" element={<CustomQuote />} />
               </Route>
               
               {/* Admin Routes */}
@@ -69,6 +72,7 @@ function App() {
                 <Route path="vision2030" element={<Vision2030Manager />} />
                 <Route path="clients" element={<ClientsManager />} />
                 <Route path="settings" element={<div>Settings</div>} />
+                <Route path="quote-requests" element={<ProjectRequestsManager />} />
               </Route>
 
 

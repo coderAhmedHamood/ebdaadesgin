@@ -36,7 +36,8 @@ const AdminLayout: React.FC = () => {
     { name: 'إدارة الأسئلة الشائعة', href: '/admin/faq', icon: HelpCircle },
     { name: 'إدارة رؤية 2030', href: '/admin/vision2030', icon: Target },
     { name: 'إدارة العملاء', href: '/admin/clients', icon: UserCheck },
-    { name: 'الإعدادات العامة', href: '/admin/settings', icon: Settings },
+    { name: 'طلبات عروض الأسعار', href: '/admin/quote-requests', icon: FileText },
+    // { name: 'الإعدادات العامة', href: '/admin/settings', icon: Settings },
   ];
 
   const isActive = (path: string) => {

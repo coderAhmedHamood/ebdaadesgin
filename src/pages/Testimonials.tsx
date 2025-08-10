@@ -168,7 +168,7 @@ const Testimonials: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">98%</div>
+              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">99%</div>
               <div className="text-gray-600 dark:text-gray-400">معدل رضا العملاء</div>
             </div>
             <div className="text-center">
@@ -176,7 +176,7 @@ const Testimonials: React.FC = () => {
               <div className="text-gray-600 dark:text-gray-400">التقييم المتوسط</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">150+</div>
+              <div className="text-4xl font-bold text-blue-600 dark:text-blue-400 mb-2">30+</div>
               <div className="text-gray-600 dark:text-gray-400">العملاء السعداء</div>
             </div>
             <div className="text-center">

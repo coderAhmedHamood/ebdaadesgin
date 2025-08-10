@@ -159,16 +159,12 @@ const Projects: React.FC = () => {
         </div>
       </section>
 
-      {/* Project Stats */}
+      {/* Project Value Highlights (non-numeric) */}
       <section className="py-20 bg-gray-50 dark:bg-gray-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">
-              {t('projectImpactStatistics')}
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              {t('projectImpactDesc')}
-            </p>
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-6">قيم نوعية تعكس أثرنا</h2>
+            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">نبرز ما يميز عملنا من جودة، أمان، التزام، وشراكات—بعيدًا عن الأرقام.</p>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
@@ -176,32 +172,32 @@ const Projects: React.FC = () => {
               <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <TrendingUp className="w-8 h-8 text-white" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">$488M</div>
-              <div className="text-gray-600 dark:text-gray-400 font-medium">{t('totalProjectValue')}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">قيمة مضافة</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">حلول تحقق أهدافك</div>
             </div>
 
             <div className="text-center p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
               <div className="w-16 h-16 bg-gradient-to-br from-green-600 to-green-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Users className="w-8 h-8 text-white" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">5,000+</div>
-              <div className="text-gray-600 dark:text-gray-400 font-medium">{t('jobsCreated')}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">شراكات ناجحة</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">علاقات طويلة المدى</div>
             </div>
 
             <div className="text-center p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
               <div className="w-16 h-16 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <Calendar className="w-8 h-8 text-white" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">95%</div>
-              <div className="text-gray-600 dark:text-gray-400 font-medium">{t('onTimeDelivery')}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">التزام بالمواعيد</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">تخطيط وتسليم مسؤول</div>
             </div>
 
             <div className="text-center p-6 bg-white dark:bg-gray-900 rounded-2xl shadow-lg">
               <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
                 <MapPin className="w-8 h-8 text-white" />
               </div>
-              <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">12</div>
-              <div className="text-gray-600 dark:text-gray-400 font-medium">{t('citiesServed')}</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-white mb-2">حضور واسع</div>
+              <div className="text-gray-600 dark:text-gray-400 font-medium">خبرة في قطاعات متعددة</div>
             </div>
           </div>
         </div>

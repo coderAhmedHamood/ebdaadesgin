@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight, Building2, Users, Award, TrendingUp, CheckCircle, Star, Play, Sparkles, Zap, Shield, Globe, Home as HomeIcon, Lightbulb, Palette, Rocket, Search, Code } from 'lucide-react';
+import { ArrowRight, Building2, Users, Award, TrendingUp, CheckCircle, Star, Play, Sparkles, Zap, Shield, Globe, Home as HomeIcon, Lightbulb, Palette, Rocket, Search, Code, Megaphone, ShoppingCart } from 'lucide-react';
 
 interface Service {
   id: number;
@@ -17,58 +17,59 @@ interface Service {
 }
 
 const Home: React.FC = () => {
+  // Value pillars (non-numeric) to replace stats
   const stats = [
-    { 
-      number: '20+', 
-      label: 'المشاريع المنجزة', 
-      icon: Building2,
-      color: 'from-blue-600 to-blue-700'
-    },
-    { 
-      number: '150+', 
-      label: 'العملاء السعداء', 
-      icon: Users,
-      color: 'from-green-600 to-green-700'
-    },
-    { 
-      number: '24+', 
-      label: 'سنوات الخبرة', 
+    {
+      title: 'جودة مضمونة',
+      description: 'معايير تطوير عالية، كود نظيف، واختبارات تضمن الاستقرار.',
       icon: Award,
-      color: 'from-purple-600 to-purple-700'
+      color: 'from-blue-600 to-blue-700',
     },
-    { 
-      number: '95%', 
-      label: 'معدل النجاح', 
-      icon: TrendingUp,
-      color: 'from-yellow-500 to-yellow-600'
+    {
+      title: 'أمان متقدّم',
+      description: 'بروتوكولات حماية قوية وتطبيق أفضل ممارسات الأمن.',
+      icon: Shield,
+      color: 'from-green-600 to-green-700',
+    },
+    {
+      title: 'دعم مستمر',
+      description: 'مرافقة بعد الإطلاق وتحديثات وتحسينات مستمرة.',
+      icon: CheckCircle,
+      color: 'from-purple-600 to-purple-700',
+    },
+    {
+      title: 'تجربة مستخدم رائعة',
+      description: 'تصميم يركّز على التحويل وسهولة الاستخدام والأداء.',
+      icon: Star,
+      color: 'from-yellow-500 to-yellow-600',
     },
   ];
 
   const features = [
     {
-      title: 'الجودة المتميزة',
-      description: 'نلتزم بأعلى معايير الجودة في جميع مشاريعنا مع استخدام أفضل المواد والتقنيات الحديثة',
+      title: 'جودة برمجية مضمونة',
+      description: 'معايير كود نظيف، اختبارات شاملة، وأفضل الممارسات لضمان أداء واعتمادية عالية للمواقع والأنظمة',
       icon: Award,
       color: 'from-blue-600 to-blue-700',
       delay: '0ms'
     },
     {
-      title: 'فريق الخبراء',
-      description: 'فريق من المهندسين والمتخصصين ذوي الخبرة الواسعة في مجال البناء والتشييد',
+      title: 'فريق تقني خبير',
+      description: 'مطوّرون ومهندسون ومستشارون بخبرة عالية في تطوير المواقع والأنظمة والسحابة والواجهات',
       icon: Users,
       color: 'from-green-600 to-green-700',
       delay: '100ms'
     },
     {
-      title: 'التسليم في الوقت المحدد',
-      description: 'نضمن تسليم جميع مشاريعنا في المواعيد المحددة مع الحفاظ على أعلى مستويات الجودة',
+      title: 'تسليم سريع ومرن',
+      description: 'منهجيات Agile وسير عمل CI/CD لضمان إطلاقات أسرع وتحديثات مستمرة بدون انقطاع',
       icon: CheckCircle,
       color: 'from-purple-600 to-purple-700',
       delay: '200ms'
     },
     {
-      title: 'رضا العملاء',
-      description: 'نسعى دائماً لتحقيق أعلى مستويات رضا العملاء من خلال الخدمة المتميزة والجودة العالية',
+      title: 'دعم وتسويق ونمو',
+      description: 'دعم فني مستمر، تحسين محركات البحث SEO، وتسويق رقمي يعزّز الوصول ويضاعف النتائج',
       icon: Star,
       color: 'from-yellow-500 to-yellow-600',
       delay: '300ms'
@@ -280,15 +281,15 @@ const Home: React.FC = () => {
               </Link>
             </div>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto animate-slide-up delay-600">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center group">
-                  <div className={`w-16 h-16 mx-auto mb-3 bg-gradient-to-br ${stat.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
-                    <stat.icon className="w-8 h-8 text-white" />
+            {/* Value Pillars (non-numeric) */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto animate-slide-up delay-600">
+              {stats.map((item, index) => (
+                <div key={index} className="text-center group bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 hover:bg-white/10 transition-all duration-300">
+                  <div className={`w-16 h-16 mx-auto mb-4 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                    <item.icon className="w-8 h-8 text-white" />
                   </div>
-                  <div className="text-3xl font-bold text-white mb-1">{stat.number}</div>
-                  <div className="text-blue-200 text-sm font-medium">{stat.label}</div>
+                  <div className="text-xl font-bold text-white mb-2">{item.title}</div>
+                  <div className="text-blue-100 text-sm leading-relaxed">{item.description}</div>
                 </div>
               ))}
             </div>
@@ -359,8 +360,8 @@ const Home: React.FC = () => {
         </div>
       </section>
 
-      {/* Services Preview Section */}
-      <section className="py-32 bg-gray-900 relative overflow-hidden">
+   {/* Services Preview Section */}
+   <section className="py-32 bg-gray-900 relative overflow-hidden">
         {/* Background Effects */}
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-br from-blue-900/20 to-purple-900/20"></div>
@@ -373,59 +374,73 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="text-center mb-20">
             <h2 className="text-5xl md:text-6xl font-bold text-white mb-8">
-              خدماتنا
+            خدماتنا الرقمية
             </h2>
             <p className="text-xl text-gray-300 max-w-4xl mx-auto">
-              حلول إنشائية شاملة للمملكة العربية السعودية الحديثة
+            تجارب مستخدم مبهرة، أداء عالٍ، وتسويق ذكي—كل ما يلزم لنجاح مشروعك على الويب في مكان واحد.
             </p>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-3xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-500 hover:transform hover:-translate-y-2"
-              >
-                {/* Image */}
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  
-                  {/* Icon Overlay */}
-                  <div className={`absolute top-6 left-6 w-12 h-12 bg-gradient-to-br ${service.color} rounded-xl flex items-center justify-center shadow-lg`}>
-                    <service.icon className="w-6 h-6 text-white" />
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="p-8">
-                  <h3 className="text-2xl font-bold text-white mb-4 group-hover:text-blue-400 transition-colors duration-300">
-                    {service.title}
-                  </h3>
-                  <p className="text-gray-300 leading-relaxed mb-6">
-                    {service.description}
-                  </p>
-                  
-                  <Link
-                    to="/services"
-                    className="inline-flex items-center text-blue-400 hover:text-blue-300 font-semibold group-hover:translate-x-2 rtl:group-hover:-translate-x-2 transition-all duration-300"
-                  >
-                    <span>اعرف المزيد</span>
-                    <ArrowRight className="w-4 h-4 ml-2 rtl:mr-2 rtl:ml-0" />
-                  </Link>
-                </div>
+            {/* Web Design */}
+            <div className="group relative p-8 bg-white/5 hover:bg-white/10 rounded-3xl border border-white/10 transition-all duration-300 shadow-xl overflow-hidden">
+              <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Palette className="w-8 h-8 text-white" />
               </div>
-            ))}
+              <h3 className="text-2xl font-bold text-white mb-3">تصميم المواقع</h3>
+              <p className="text-gray-300 mb-6">تصاميم عصرية متجاوبة تُبرز هوية علامتك وتمنح زوّارك تجربة استخدام مميزة.</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">مناسب للشركات وروّاد الأعمال</span>
+                <Link to="/services" className="inline-flex items-center text-yellow-400 hover:text-yellow-300 font-semibold">
+                  تعرف أكثر
+                  <ArrowRight className="w-5 h-5 ml-2 rtl:mr-2 rtl:ml-0" />
+                </Link>
+              </div>
+              <div className="absolute -right-16 -bottom-16 w-56 h-56 bg-blue-500/10 rounded-full blur-3xl"></div>
+            </div>
+
+            {/* Digital Marketing */}
+            <div className="group relative p-8 bg-white/5 hover:bg-white/10 rounded-3xl border border-white/10 transition-all duration-300 shadow-xl overflow-hidden">
+              <div className="w-16 h-16 bg-gradient-to-br from-rose-600 to-rose-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <Megaphone className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">التسويق الرقمي</h3>
+              <p className="text-gray-300 mb-6">حملات إعلانية، إدارة منصات التواصل، وتحسين الظهور في محركات البحث لزيادة العملاء.</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">نتائج قابلة للقياس وتحسين مستمر</span>
+                <Link to="/services" className="inline-flex items-center text-yellow-400 hover:text-yellow-300 font-semibold">
+                  تعرف أكثر
+                  <ArrowRight className="w-5 h-5 ml-2 rtl:mr-2 rtl:ml-0" />
+                </Link>
+              </div>
+              <div className="absolute -right-16 -bottom-16 w-56 h-56 bg-rose-500/10 rounded-full blur-3xl"></div>
+            </div>
+
+            {/* E-commerce Store Management */}
+            <div className="group relative p-8 bg-white/5 hover:bg-white/10 rounded-3xl border border-white/10 transition-all duration-300 shadow-xl overflow-hidden">
+              <div className="w-16 h-16 bg-gradient-to-br from-teal-600 to-teal-700 rounded-2xl flex items-center justify-center mb-6 shadow-lg">
+                <ShoppingCart className="w-8 h-8 text-white" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-3">إدارة المتاجر الإلكترونية</h3>
+              <p className="text-gray-300 mb-6">إطلاق وإدارة متاجر احترافية مع تحسين المنتجات والمدفوعات والشحن وتجربة الشراء.</p>
+              <div className="flex items-center justify-between">
+                <span className="text-sm text-gray-400">تجهيز كامل وتشغيل مستمر</span>
+                <Link to="/services" className="inline-flex items-center text-yellow-400 hover:text-yellow-300 font-semibold">
+                  تعرف أكثر
+                  <ArrowRight className="w-5 h-5 ml-2 rtl:mr-2 rtl:ml-0" />
+                </Link>
+              </div>
+              <div className="absolute -right-16 -bottom-16 w-56 h-56 bg-teal-500/10 rounded-full blur-3xl"></div>
+            </div>
           </div>
 
           
         </div>
       </section>
 
+
+
+ 
       {/* How We Work Section */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -450,57 +465,7 @@ const Home: React.FC = () => {
           </div>
         </div>
       </section>
-
-      {/* Achievements Section */}
-      <section className="py-32 bg-gradient-to-b from-white to-blue-50 dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-20">
-            <h2 className="text-5xl md:text-6xl font-bold text-gray-900 dark:text-white mb-8">
-              إنجازاتنا المتميزة
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-400 max-w-4xl mx-auto">
-              نفخر بمساهماتنا في بناء مستقبل المملكة العربية السعودية
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {achievements.map((achievement, index) => (
-              <div
-                key={index}
-                className="group relative p-8 bg-white dark:bg-gray-800 rounded-3xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-gray-100 dark:border-gray-700 overflow-hidden"
-              >
-                {/* Background Gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-blue-600/5 to-purple-600/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                
-                <div className="relative">
-                  {/* Icon */}
-                  <div className="w-16 h-16 bg-gradient-to-br from-blue-600 to-purple-600 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <achievement.icon className="w-8 h-8 text-white" />
-                  </div>
-
-                  {/* Value */}
-                  <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    {achievement.value}
-                  </div>
-                  <div className="text-blue-600 dark:text-blue-400 font-semibold mb-4">
-                    {achievement.metric}
-                  </div>
-
-                  {/* Title */}
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
-                    {achievement.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="text-gray-600 dark:text-gray-400 leading-relaxed">
-                    {achievement.description}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+ 
 
       {/* Enhanced Call to Action */}
       <section className="py-32 relative overflow-hidden">
