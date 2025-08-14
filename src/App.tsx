@@ -15,6 +15,7 @@ import Vision2030Manager from './components/admin/Vision2030Manager';
 import ContentManager from './components/admin/ContentManager';
 import ProjectManager from './components/admin/ProjectManager';
 import ClientsManager from './components/admin/ClientsManager';
+import PackagesManager from './components/admin/PackagesManager';
 
 
 
@@ -66,6 +67,7 @@ function App() {
                 <Route path="content" element={<ContentManager />} />
                 <Route path="projects" element={<ProjectManager />} />
                 <Route path="services" element={<ServicesManager />} />
+                <Route path="packages" element={<PackagesManager />} />
                 <Route path="team" element={<TeamManager />} />
                 <Route path="testimonials" element={<TestimonialsManager />} />
                 <Route path="faq" element={<FAQManager />} />

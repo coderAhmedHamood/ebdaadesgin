@@ -17,6 +17,19 @@ interface Service {
   display_order: number;
 }
 
+// Define Package type based on DB schema
+interface PackageItem {
+  id: number;
+  title: string;
+  description: string;
+  price: number | null;
+  delivery_time: string | null;
+  features: string[];
+  category: string | null;
+  is_active: boolean;
+  display_order: number | null;
+}
+
 // Map icon names from the database to Lucide icon components
 const iconMap: { [key: string]: LucideIcon } = {
   Building,
@@ -34,6 +47,10 @@ const Services: React.FC = () => {
   const [services, setServices] = useState<Service[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  // Packages state
+  const [packages, setPackages] = useState<PackageItem[]>([]);
+  const [pkLoading, setPkLoading] = useState<boolean>(true);
+  const [pkError, setPkError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchServices = async () => {
@@ -56,6 +73,32 @@ const Services: React.FC = () => {
     };
 
     fetchServices();
+  }, []);
+
+  useEffect(() => {
+    const fetchPackages = async () => {
+      try {
+        const res = await fetch('/api/packages');
+        if (!res.ok) throw new Error('Failed to fetch packages');
+        const data = await res.json();
+        // Filter active packages and sort by display_order then id
+        const sorted = (Array.isArray(data) ? data : [])
+          .filter((p: PackageItem) => p.is_active)
+          .sort((a: PackageItem, b: PackageItem) => {
+            const ao = a.display_order ?? 999999;
+            const bo = b.display_order ?? 999999;
+            if (ao !== bo) return ao - bo;
+            return (a.id || 0) - (b.id || 0);
+          });
+        setPackages(sorted);
+        setPkError(null);
+      } catch (e) {
+        setPkError(e instanceof Error ? e.message : 'Unknown error');
+      } finally {
+        setPkLoading(false);
+      }
+    };
+    fetchPackages();
   }, []);
 
   return (
@@ -292,7 +335,7 @@ const Services: React.FC = () => {
         </div>
       </section>
 
-      {/* Pricing Packages Section */}
+      {/* Pricing Packages Section (Dynamic from DB) */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -300,50 +343,60 @@ const Services: React.FC = () => {
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">{t('pricingSubtitle')}</p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8 items-start">
-            {/* Basic Package */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg flex flex-col h-full">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('basicPackageTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('basicPackageDesc')}</p>
-              <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">{t('basicPackagePrice')}</div>
-              <p className="text-gray-500 dark:text-gray-400 mb-6 font-semibold">{t('basicPackageDelivery')}</p>
-              <ul className="space-y-4 text-gray-600 dark:text-gray-300 mb-8">
-                {[ t('basicPackageFeature2'), t('basicPackageFeature3'), t('basicPackageFeature4'), t('basicPackageFeature5'), t('basicPackageFeature6')].map(feature => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <a href="/contact" className="mt-auto w-full text-center px-6 py-3 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{t('choosePackage')}</a>
-            </div>
+          {pkLoading && (
+            <p className="text-center text-gray-500">{t('loading')}...</p>
+          )}
+          {pkError && (
+            <p className="text-center text-red-500">{t('error')}: {pkError}</p>
+          )}
 
-            {/* Advanced Package */}
-            <div className="relative bg-blue-900 text-white rounded-2xl p-8 shadow-2xl transform lg:scale-105 flex flex-col h-full">
-              <span className="absolute top-0 right-8 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-b-lg">{t('mostPopular')}</span>
-              <h3 className="text-2xl font-bold mb-2">{t('advancedPackageTitle')}</h3>
-              <p className="text-blue-200 mb-6">{t('advancedPackageDesc')}</p>
-              <div className="text-4xl font-bold mb-2">{t('advancedPackagePrice')}</div>
-              <p className="text-blue-300 mb-6 font-semibold">{t('advancedPackageDelivery')}</p>
-              <ul className="space-y-4 text-blue-200 mb-8">
-                {[ t('advancedPackageFeature2'), t('advancedPackageFeature3'), t('advancedPackageFeature4'), t('advancedPackageFeature5'), t('advancedPackageFeature6'), t('advancedPackageFeature7'), t('advancedPackageFeature8')].map(feature => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-yellow-400 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <a href="/contact" className="mt-auto w-full text-center px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-all duration-300">{t('choosePackage')}</a>
+          {!pkLoading && !pkError && (
+            <div className="grid lg:grid-cols-3 gap-8 items-start">
+              {packages.map((pkg, idx) => {
+                const isFeatured = (pkg.display_order ?? 999999) === 1 || idx === 0;
+                return (
+                  <div
+                    key={pkg.id}
+                    className={
+                      isFeatured
+                        ? 'relative bg-blue-900 text-white rounded-2xl p-8 shadow-2xl transform lg:scale-105 flex flex-col h-full'
+                        : 'bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg flex flex-col h-full'
+                    }
+                  >
+                    {isFeatured && (
+                      <span className="absolute top-0 right-8 bg-yellow-400 text-gray-900 text-xs font-bold px-3 py-1 rounded-b-lg">{t('mostPopular')}</span>
+                    )}
+                    <h3 className={`text-2xl font-bold mb-2 ${isFeatured ? '' : 'text-gray-900 dark:text-white'}`}>{pkg.title}</h3>
+                    <p className={`${isFeatured ? 'text-blue-200' : 'text-gray-600 dark:text-gray-400'} mb-6`}>{pkg.description}</p>
+                    <div className={`text-4xl font-bold mb-2 ${isFeatured ? '' : 'text-gray-900 dark:text-white'}`}>
+                      {pkg.price != null ? `${pkg.price} ريال` : t('pricingContact')}
+                    </div>
+                    <p className={`${isFeatured ? 'text-blue-300' : 'text-gray-500 dark:text-gray-400'} mb-6 font-semibold`}>
+                      {pkg.delivery_time || ''}
+                    </p>
+                    <ul className={`space-y-4 mb-8 ${isFeatured ? 'text-blue-200' : 'text-gray-600 dark:text-gray-300'}`}>
+                      {pkg.features?.map((f, i) => (
+                        <li key={i} className="flex items-center">
+                          <CheckCircle className={`w-5 h-5 mr-3 ${isFeatured ? 'text-yellow-400' : 'text-green-500'}`} />
+                          <span>{f}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <a
+                      href="/contact"
+                      className={
+                        isFeatured
+                          ? 'mt-auto w-full text-center px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-all duration-300'
+                          : 'mt-auto w-full text-center px-6 py-3 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300'
+                      }
+                    >
+                      {t('choosePackage')}
+                    </a>
+                  </div>
+                );
+              })}
             </div>
-
-            {/* Professional Package */}
-            <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg flex flex-col h-full">
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('professionalPackageTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('professionalPackageDesc')}</p>
-              <div className="text-4xl font-bold text-gray-900 dark:text-white mb-2">{t('professionalPackagePrice')}</div>
-              <p className="text-gray-500 dark:text-gray-400 mb-6 font-semibold">{t('professionalPackageDelivery')}</p>
-              <ul className="space-y-4 text-gray-600 dark:text-gray-300 mb-8">
-                {[ t('professionalPackageFeature2'), t('professionalPackageFeature3'), t('professionalPackageFeature4'), t('professionalPackageFeature5'), t('professionalPackageFeature6'), t('professionalPackageFeature7'), t('professionalPackageFeature8'), t('professionalPackageFeature9'), t('professionalPackageFeature10')].map(feature => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <a href="/contact" className="mt-auto w-full text-center px-6 py-3 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{t('choosePackage')}</a>
-            </div>
-          </div>
+          )}
         </div>
       </section>
 

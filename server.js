@@ -77,6 +77,109 @@ app.get('/api/project-requests', (req, res) => {
     });
 });
 
+// ================= Packages CRUD (Admin) =================
+// Get all packages (ordered by display_order then id)
+app.get('/api/packages', (req, res) => {
+    const sql = 'SELECT * FROM packages ORDER BY COALESCE(display_order, 999999), id';
+    db.all(sql, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        const list = rows.map(r => ({
+            ...r,
+            features: (() => { try { return JSON.parse(r.features || '[]'); } catch { return []; } })(),
+            is_active: r.is_active === 1 || r.is_active === true
+        }));
+        res.json(list);
+    });
+});
+
+// Create a new package
+app.post('/api/packages', (req, res) => {
+    const {
+        title,
+        description,
+        price,
+        delivery_time,
+        features,
+        category,
+        is_active,
+        display_order
+    } = req.body;
+
+    const sql = `INSERT INTO packages (
+        title, description, price, delivery_time, features, category, is_active, display_order
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const params = [
+        title || '',
+        description || '',
+        price ?? null,
+        delivery_time || null,
+        JSON.stringify(Array.isArray(features) ? features : []),
+        category || null,
+        is_active ? 1 : 0,
+        display_order ?? null
+    ];
+
+    db.run(sql, params, function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: 'Package created', id: this.lastID });
+    });
+});
+
+// Update a package
+app.put('/api/packages/:id', (req, res) => {
+    const { id } = req.params;
+    const {
+        title,
+        description,
+        price,
+        delivery_time,
+        features,
+        category,
+        is_active,
+        display_order
+    } = req.body;
+
+    const sql = `UPDATE packages SET 
+        title = ?,
+        description = ?,
+        price = ?,
+        delivery_time = ?,
+        features = ?,
+        category = ?,
+        is_active = ?,
+        display_order = ?
+        WHERE id = ?`;
+
+    const params = [
+        title || '',
+        description || '',
+        price ?? null,
+        delivery_time || null,
+        JSON.stringify(Array.isArray(features) ? features : []),
+        category || null,
+        is_active ? 1 : 0,
+        display_order ?? null,
+        parseInt(id)
+    ];
+
+    db.run(sql, params, function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: 'Package not found' });
+        res.json({ message: 'Package updated' });
+    });
+});
+
+// Delete a package
+app.delete('/api/packages/:id', (req, res) => {
+    const { id } = req.params;
+    db.run('DELETE FROM packages WHERE id = ?', [parseInt(id)], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: 'Package not found' });
+        res.json({ message: 'Package deleted' });
+    });
+});
+
 // Create a new project request
 app.post('/api/project-requests', (req, res) => {
     const { name, company_name, requested_services, phone, email } = req.body;
@@ -120,6 +223,18 @@ const db = new sqlite3.Database(dbPath, (err) => {
             requested_services TEXT,
             phone TEXT,
             email TEXT
+        )`);
+        // Ensure packages table exists per required schema
+        db.run(`CREATE TABLE IF NOT EXISTS packages (
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            description TEXT,
+            price REAL,
+            delivery_time TEXT,
+            features TEXT,
+            category TEXT,
+            is_active BOOLEAN,
+            display_order INTEGER
         )`);
     }
 });

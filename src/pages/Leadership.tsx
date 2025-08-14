@@ -183,7 +183,7 @@ const Leadership: React.FC = () => {
                       </ul>
                       {leader.skills && leader.skills.length > 0 && (
                         <div className="mt-6">
-                          <h5 className="font-semibold text-gray-800 dark:text-white mb-2">{t('skills') || 'المهارات'}</h5>
+                          <h5 className="font-semibold text-gray-800 dark:text-white mb-2">{ 'المهارات'}</h5>
                           <div className="flex flex-wrap gap-2">
                             {leader.skills.map((s, idx) => (
                               <span key={idx} className="px-3 py-1 text-sm rounded-full bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200">

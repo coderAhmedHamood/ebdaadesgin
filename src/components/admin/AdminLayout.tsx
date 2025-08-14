@@ -16,7 +16,8 @@ import {
   Globe,
   Bell,
   Search,
-  UserCheck
+  UserCheck,
+  Package
 } from 'lucide-react';
 import { useAdmin } from '../../contexts/AdminContext';
 
@@ -31,6 +32,7 @@ const AdminLayout: React.FC = () => {
     { name: 'إدارة المحتوى', href: '/admin/content', icon: FileText },
     { name: 'إدارة المشاريع', href: '/admin/projects', icon: Building },
     { name: 'إدارة الخدمات', href: '/admin/services', icon: Settings },
+    { name: 'إدارة الباقات', href: '/admin/packages', icon: Package },
     { name: 'إدارة الفريق', href: '/admin/team', icon: Users },
     { name: 'إدارة الشهادات', href: '/admin/testimonials', icon: MessageSquare },
     { name: 'إدارة الأسئلة الشائعة', href: '/admin/faq', icon: HelpCircle },
