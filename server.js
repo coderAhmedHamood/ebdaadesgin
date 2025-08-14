@@ -77,6 +77,114 @@ app.get('/api/project-requests', (req, res) => {
     });
 });
 
+// ================= Packages Server CRUD (Admin) =================
+// Get all packages_server (ordered by display_order then id)
+app.get('/api/packages-server', (req, res) => {
+    const sql = 'SELECT * FROM packages_server ORDER BY COALESCE(display_order, 999999), id';
+    db.all(sql, [], (err, rows) => {
+        if (err) return res.status(500).json({ error: err.message });
+        const list = rows.map(r => ({
+            ...r,
+            features: (() => { try { return JSON.parse(r.features || '[]'); } catch { return []; } })(),
+            is_active: r.is_active === 1 || r.is_active === true
+        }));
+        res.json(list);
+    });
+});
+
+// Create a new packages_server item
+app.post('/api/packages-server', (req, res) => {
+    const {
+        title,
+        description,
+        price,
+        delivery_time,
+        features,
+        category,
+        is_active,
+        display_order,
+        icon_html
+    } = req.body;
+
+    const sql = `INSERT INTO packages_server (
+        title, description, price, delivery_time, features, category, is_active, display_order, icon_html
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const params = [
+        title || '',
+        description || '',
+        price ?? null,
+        delivery_time || null,
+        JSON.stringify(Array.isArray(features) ? features : []),
+        category || null,
+        is_active ? 1 : 0,
+        display_order ?? null,
+        icon_html || null
+    ];
+
+    db.run(sql, params, function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        res.status(201).json({ message: 'PackageServer created', id: this.lastID });
+    });
+});
+
+// Update a packages_server item
+app.put('/api/packages-server/:id', (req, res) => {
+    const { id } = req.params;
+    const {
+        title,
+        description,
+        price,
+        delivery_time,
+        features,
+        category,
+        is_active,
+        display_order,
+        icon_html
+    } = req.body;
+
+    const sql = `UPDATE packages_server SET 
+        title = ?,
+        description = ?,
+        price = ?,
+        delivery_time = ?,
+        features = ?,
+        category = ?,
+        is_active = ?,
+        display_order = ?,
+        icon_html = ?
+        WHERE id = ?`;
+
+    const params = [
+        title || '',
+        description || '',
+        price ?? null,
+        delivery_time || null,
+        JSON.stringify(Array.isArray(features) ? features : []),
+        category || null,
+        is_active ? 1 : 0,
+        display_order ?? null,
+        icon_html || null,
+        parseInt(id)
+    ];
+
+    db.run(sql, params, function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: 'PackageServer not found' });
+        res.json({ message: 'PackageServer updated' });
+    });
+});
+
+// Delete a packages_server item
+app.delete('/api/packages-server/:id', (req, res) => {
+    const { id } = req.params;
+    db.run('DELETE FROM packages_server WHERE id = ?', [parseInt(id)], function(err) {
+        if (err) return res.status(500).json({ error: err.message });
+        if (this.changes === 0) return res.status(404).json({ error: 'PackageServer not found' });
+        res.json({ message: 'PackageServer deleted' });
+    });
+});
+
 // ================= Packages CRUD (Admin) =================
 // Get all packages (ordered by display_order then id)
 app.get('/api/packages', (req, res) => {
@@ -235,6 +343,19 @@ const db = new sqlite3.Database(dbPath, (err) => {
             category TEXT,
             is_active BOOLEAN,
             display_order INTEGER
+        )`);
+        // Ensure packages_server table exists
+        db.run(`CREATE TABLE IF NOT EXISTS packages_server (
+            id INTEGER PRIMARY KEY,
+            title TEXT,
+            description TEXT,
+            price REAL,
+            delivery_time TEXT,
+            features TEXT,
+            category TEXT,
+            is_active BOOLEAN,
+            display_order INTEGER,
+            icon_html TEXT
         )`);
     }
 });

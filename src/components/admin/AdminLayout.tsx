@@ -33,6 +33,7 @@ const AdminLayout: React.FC = () => {
     { name: 'إدارة المشاريع', href: '/admin/projects', icon: Building },
     { name: 'إدارة الخدمات', href: '/admin/services', icon: Settings },
     { name: 'إدارة الباقات', href: '/admin/packages', icon: Package },
+    { name: 'إدارة باقات السيرفر', href: '/admin/packages-server', icon: Package },
     { name: 'إدارة الفريق', href: '/admin/team', icon: Users },
     { name: 'إدارة الشهادات', href: '/admin/testimonials', icon: MessageSquare },
     { name: 'إدارة الأسئلة الشائعة', href: '/admin/faq', icon: HelpCircle },

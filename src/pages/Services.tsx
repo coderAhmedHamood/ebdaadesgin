@@ -1,21 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Building, Home, Factory, Wrench, Shield, Zap, Users, Award, CheckCircle, Palette, Code, Smartphone, Activity, Megaphone, ShoppingCart, type LucideIcon } from 'lucide-react';
+import { CheckCircle, Zap, Award, Shield, Wrench, Activity, Smartphone, Code, Palette, Users } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
-// Define the Service type based on the database schema
-interface Service {
-  id: number;
-  title: string;
-  description: string;
-  short_description: string;
-  icon: string;
-  image: string;
-  features: string[];
-  benefits: string[];
-  category: string;
-  is_active: boolean;
-  display_order: number;
-}
+//
 
 // Define Package type based on DB schema
 interface PackageItem {
@@ -28,52 +15,23 @@ interface PackageItem {
   category: string | null;
   is_active: boolean;
   display_order: number | null;
+  icon_html: string | null;
 }
 
-// Map icon names from the database to Lucide icon components
-const iconMap: { [key: string]: LucideIcon } = {
-  Building,
-  Home,
-  Factory,
-  Wrench,
-  Shield,
-  Zap,
-  Users,
-  Award,
-};
+//
 
 const Services: React.FC = () => {
   const { t } = useLanguage();
-  const [services, setServices] = useState<Service[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
   // Packages state
   const [packages, setPackages] = useState<PackageItem[]>([]);
   const [pkLoading, setPkLoading] = useState<boolean>(true);
   const [pkError, setPkError] = useState<string | null>(null);
+  // Packages from packages_server (Comprehensive Services)
+  const [serverPackages, setServerPackages] = useState<PackageItem[]>([]);
+  const [spLoading, setSpLoading] = useState<boolean>(true);
+  const [spError, setSpError] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchServices = async () => {
-      try {
-        const response = await fetch('/api/services');
-        if (!response.ok) {
-          throw new Error('Failed to fetch services');
-        }
-        const data = await response.json();
-        setServices(data);
-      } catch (err) {
-        if (err instanceof Error) {
-            setError(err.message);
-        } else {
-            setError('An unknown error occurred');
-        }
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchServices();
-  }, []);
+  // removed services static grid fetch; now using packages_server data
 
   useEffect(() => {
     const fetchPackages = async () => {
@@ -101,10 +59,74 @@ const Services: React.FC = () => {
     fetchPackages();
   }, []);
 
+  useEffect(() => {
+    const fetchServerPackages = async () => {
+      try {
+        const res = await fetch('/api/packages-server');
+        if (!res.ok) throw new Error('Failed to fetch server packages');
+        const data = await res.json();
+        const sorted = (Array.isArray(data) ? data : [])
+          .filter((p: PackageItem) => p.is_active)
+          .sort((a: PackageItem, b: PackageItem) => {
+            const ao = a.display_order ?? 999999;
+            const bo = b.display_order ?? 999999;
+            if (ao !== bo) return ao - bo;
+            return (a.id || 0) - (b.id || 0);
+          });
+        setServerPackages(sorted);
+        setSpError(null);
+      } catch (e) {
+        setSpError(e instanceof Error ? e.message : 'Unknown error');
+      } finally {
+        setSpLoading(false);
+      }
+    };
+    fetchServerPackages();
+  }, []);
+
+  // Extract icon and gradient classes from the stored icon_html hint
+  const getIconMeta = (html?: string | null) => {
+    const defaultClasses = 'from-blue-600 to-blue-700';
+    if (!html) return { icon: 'default' as const, classes: defaultClasses };
+    const fromMatch = html.match(/from-\S+/);
+    const toMatch = html.match(/to-\S+/);
+    const classes = `${fromMatch ? fromMatch[0] : 'from-blue-600'} ${toMatch ? toMatch[0] : 'to-blue-700'}`;
+    let icon: 'wrench'|'activity'|'smartphone'|'code'|'palette'|'default' = 'default';
+    const lower = html.toLowerCase();
+    if (lower.includes('wrench')) icon = 'wrench';
+    else if (lower.includes('activity')) icon = 'activity';
+    else if (lower.includes('smartphone')) icon = 'smartphone';
+    else if (lower.includes('code')) icon = 'code';
+    else if (lower.includes('palette')) icon = 'palette';
+    return { icon, classes };
+  };
+
+  const renderIcon = (html?: string | null) => {
+    const meta = getIconMeta(html);
+    const common = 'w-14 h-14 bg-gradient-to-br rounded-xl flex items-center justify-center mb-6';
+    const inner = 'w-7 h-7 text-white';
+    let IconComp: React.ReactNode = null;
+    switch (meta.icon) {
+      case 'wrench': IconComp = <Wrench className={inner} />; break;
+      case 'activity': IconComp = <Activity className={inner} />; break;
+      case 'smartphone': IconComp = <Smartphone className={inner} />; break;
+      case 'code': IconComp = <Code className={inner} />; break;
+      case 'palette': IconComp = <Palette className={inner} />; break;
+      default: IconComp = <Shield className={inner} />; // fallback icon
+    }
+    return (
+      <div className={`${common} ${meta.classes}`}>
+        {IconComp}
+      </div>
+    );
+  };
+
   return (
     <div className="pt-20">
       {/* Hero Section */}
       <section className="py-20 bg-gradient-to-br from-blue-900 via-blue-800 to-gray-900 text-white">
+     
+  
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-6">
             {t('servicesTitle')}
@@ -177,160 +199,43 @@ const Services: React.FC = () => {
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">{t('servicesFullSubtitle')}</p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {/* Web Design */}
-            <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mb-6">
-                <Palette className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('webDesignTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('webDesignDesc')}</p>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-                {[t('webDesignFeature1'), t('webDesignFeature2'), t('webDesignFeature3'), t('webDesignFeature4'), t('webDesignFeature5')].map((feature) => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
+          <div className="min-h-[120px]">
+            {spLoading && (
+              <p className="text-center text-gray-500">{t('loading')}...</p>
+            )}
+            {spError && (
+              <p className="text-center text-red-500">{t('error')}: {spError}</p>
+            )}
+            {!spLoading && !spError && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {serverPackages.map((item) => (
+                  <div key={item.id} className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
+                    {renderIcon(item.icon_html)}
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{item.title}</h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-6">{item.description}</p>
+                    {Array.isArray(item.features) && item.features.length > 0 && (
+                      <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
+                        {item.features.map((feature, i) => (
+                          <li key={i} className="flex items-center">
+                            <CheckCircle className="w-5 h-5 text-green-500 mr-3" />
+                            <span>{feature}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                    {(item.delivery_time || item.price != null) && (
+                      <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
+                        {item.delivery_time ? <div className="mb-1">{item.delivery_time}</div> : null}
+                        {item.price != null ? <div className="font-semibold">{item.price} ريال</div> : null}
+                      </div>
+                    )}
+                    <a href="/contact" className="inline-block px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">
+                      {t('choosePackage')}
+                    </a>
+                  </div>
                 ))}
-              </ul>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('webDesignDelivery')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('webDesignReviews')}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{t('webDesignPrice')}</div>
-                <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
               </div>
-            </div>
-
-            {/* Web Development */}
-
-         
-
-
-
-
-            {/* Digital Marketing (Comprehensive Service) */}
-            <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-rose-600 to-rose-700 rounded-xl flex items-center justify-center mb-6">
-                <Megaphone className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('marketingTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('marketingDesc')}</p>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-                {[t('marketingFeature1'), t('marketingFeature2'), t('marketingFeature3'), t('marketingFeature4'), t('marketingFeature5')].map((feature) => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('marketingDelivery')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('marketingReviews')}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{t('marketingPrice')}</div>
-                <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
-              </div>
-            </div>
-
-            {/* Store Management (Comprehensive Service) */}
-            <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-teal-600 to-teal-700 rounded-xl flex items-center justify-center mb-6">
-                <ShoppingCart className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('storeMgmtTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('storeMgmtDesc')}</p>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-                {[t('storeMgmtFeature1'), t('storeMgmtFeature2'), t('storeMgmtFeature3'), t('storeMgmtFeature4'), t('storeMgmtFeature5')].map((feature) => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('storeMgmtDelivery')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('storeMgmtReviews')}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{t('storeMgmtPrice')}</div>
-                <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
-              </div>
-            </div>
-
-
-
-     {/* الكارت الأول (تصميمه الرمادي، لكن نصوص برمجة) */}
-     <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-          
-          <div className="w-14 h-14 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl flex items-center justify-center mb-6">
-            <Code className="w-7 h-7 text-white" />
-          </div>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('webDevTitle')}</h3>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">{t('webDevDesc')}</p>
-          <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-            {[t('webDevFeature1'), t('webDevFeature2'), t('webDevFeature3'), t('webDevFeature4'), t('webDevFeature5')].map((feature) => (
-              <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-            ))}
-          </ul>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('webDevDelivery')}</div>
-          <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('webDevReviews')}</div>
-          <div className="flex items-center justify-between">
-            <div className="text-xl font-bold text-gray-900 dark:text-white">{t('webDevPrice')}</div>
-            <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
-          </div>
-        </div>
-
-            
-
-            {/* Responsive Design */}
-            <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-green-600 to-green-700 rounded-xl flex items-center justify-center mb-6">
-                <Smartphone className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('responsiveTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('responsiveDesc')}</p>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-                {[t('responsiveFeature1'), t('responsiveFeature2'), t('responsiveFeature3'), t('responsiveFeature4'), t('responsiveFeature5')].map((feature) => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('responsiveDelivery')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('responsiveReviews')}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{t('responsivePrice')}</div>
-                <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
-              </div>
-            </div>
-
-            {/* Performance Optimization */}
-            <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-purple-700 rounded-xl flex items-center justify-center mb-6">
-                <Activity className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('perfTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('perfDesc')}</p>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-                {[t('perfFeature1'), t('perfFeature2'), t('perfFeature3'), t('perfFeature4'), t('perfFeature5')].map((feature) => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('perfDelivery')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('perfReviews')}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{t('perfPrice')}</div>
-                <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
-              </div>
-            </div>
-
-        
-
-            {/* Support and Maintenance */}
-            <div className="relative bg-gray-50 dark:bg-gray-800 rounded-2xl p-8 shadow-lg hover:shadow-xl transition-all duration-300">
-              <div className="w-14 h-14 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center mb-6">
-                <Wrench className="w-7 h-7 text-white" />
-              </div>
-              <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">{t('supportTitle')}</h3>
-              <p className="text-gray-600 dark:text-gray-400 mb-6">{t('supportDesc')}</p>
-              <ul className="space-y-3 text-gray-600 dark:text-gray-300 mb-6">
-                {[t('supportFeature1'), t('supportFeature2'), t('supportFeature3'), t('supportFeature4'), t('supportFeature5')].map((feature) => (
-                  <li key={feature} className="flex items-center"><CheckCircle className="w-5 h-5 text-green-500 mr-3" /><span>{feature}</span></li>
-                ))}
-              </ul>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-2">{t('supportDelivery')}</div>
-              <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">{t('supportReviews')}</div>
-              <div className="flex items-center justify-between">
-                <div className="text-xl font-bold text-gray-900 dark:text-white">{t('supportPrice')}</div>
-                <a href="/contact" className="px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">{}</a>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </section>
@@ -430,6 +335,11 @@ const Services: React.FC = () => {
           </div>
         </div>
       </section>
+
+ 
+
+ 
+
 
  {/* Why Choose Our Services */}
  <section className="py-24 bg-gray-50 dark:bg-gray-800">

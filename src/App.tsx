@@ -16,6 +16,7 @@ import ContentManager from './components/admin/ContentManager';
 import ProjectManager from './components/admin/ProjectManager';
 import ClientsManager from './components/admin/ClientsManager';
 import PackagesManager from './components/admin/PackagesManager';
+import PackagesServerManager from './components/admin/PackagesServerManager';
 
 
 
@@ -68,6 +69,7 @@ function App() {
                 <Route path="projects" element={<ProjectManager />} />
                 <Route path="services" element={<ServicesManager />} />
                 <Route path="packages" element={<PackagesManager />} />
+                <Route path="packages-server" element={<PackagesServerManager />} />
                 <Route path="team" element={<TeamManager />} />
                 <Route path="testimonials" element={<TestimonialsManager />} />
                 <Route path="faq" element={<FAQManager />} />
