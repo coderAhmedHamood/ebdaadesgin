@@ -61,11 +61,11 @@ export const AdminProvider: React.FC<AdminProviderProps> = ({ children }) => {
       // });
       
       // Mock authentication for demo
-      if (email === 'admin@awjcontracting.sa' && password === 'admin123') {
+      if (email === 'admin@ebdaadesign.sa' && password === 'admin123') {
         const mockUser: User = {
           id: '1',
-          name: 'Ahmed Al-Rashid',
-          email: 'admin@awjcontracting.sa',
+          name: 'Ahmed AL-Omari',
+          email: 'admin@ebdaadesign.sa',
           role: 'admin',
           avatar: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150'
         };

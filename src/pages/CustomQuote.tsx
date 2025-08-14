@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const CustomQuote: React.FC = () => {
@@ -8,6 +8,8 @@ const CustomQuote: React.FC = () => {
   const [services, setServices] = useState<string[]>([]);
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
+  const [description, setDescription] = useState('');
+  const [selectedPackageTitle, setSelectedPackageTitle] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [errors, setErrors] = useState<{ [k: string]: string }>({});
 
@@ -39,6 +41,7 @@ const CustomQuote: React.FC = () => {
           requested_services: services,
           phone,
           email,
+          message: description,
         }),
       });
       if (!res.ok) throw new Error('Failed');
@@ -48,6 +51,18 @@ const CustomQuote: React.FC = () => {
       alert('حدث خطأ أثناء الإرسال. حاول مرة أخرى.');
     }
   };
+
+  // Prefill from query params/localStorage if provided
+  useEffect(() => {
+    try {
+      const sp = new URLSearchParams(window.location.search);
+      const title = sp.get('selected_package_title');
+      const prefill = sp.get('prefill_desc');
+      if (title) setSelectedPackageTitle(title);
+      if (prefill) setDescription(prefill);
+      else if (title && !prefill) setDescription(`أرغب في الحصول على باقة ${title}`);
+    } catch {}
+  }, []);
 
   const serviceOptions = [
     { key: 'serviceWebsite', label: t('serviceWebsite') },
@@ -69,6 +84,12 @@ const CustomQuote: React.FC = () => {
         </div>
 
         <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-6 sm:p-10">
+          {selectedPackageTitle && (
+            <div className="mb-6 p-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-100">
+              <div className="font-bold">الباقة المختارة:</div>
+              <div>{selectedPackageTitle}</div>
+            </div>
+          )}
           {submitted ? (
             <div className="text-center py-12">
               <div className="text-2xl font-bold text-green-600 mb-3">{t('success')}</div>
@@ -127,6 +148,19 @@ const CustomQuote: React.FC = () => {
                     </label>
                   ))}
                 </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  وصف الطلب
+                </label>
+                <textarea
+                  rows={4}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 text-gray-900 dark:text-white px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-600"
+                  placeholder="اكتب تفاصيل إضافية لطلبك"
+                />
               </div>
 
               <div>

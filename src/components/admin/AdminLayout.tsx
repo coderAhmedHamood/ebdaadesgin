@@ -28,16 +28,16 @@ const AdminLayout: React.FC = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigation = [
-    { name: 'لوحة المعلومات', href: '/admin', icon: Home },
-    { name: 'إدارة المحتوى', href: '/admin/content', icon: FileText },
+    // { name: 'لوحة المعلومات', href: '/admin', icon: Home },
+    // { name: 'إدارة المحتوى', href: '/admin/content', icon: FileText },
     { name: 'إدارة المشاريع', href: '/admin/projects', icon: Building },
-    { name: 'إدارة الخدمات', href: '/admin/services', icon: Settings },
+    // { name: 'إدارة الخدمات', href: '/admin/services', icon: Settings },
     { name: 'إدارة الباقات', href: '/admin/packages', icon: Package },
     { name: 'إدارة باقات السيرفر', href: '/admin/packages-server', icon: Package },
     { name: 'إدارة الفريق', href: '/admin/team', icon: Users },
-    { name: 'إدارة الشهادات', href: '/admin/testimonials', icon: MessageSquare },
+    // { name: 'إدارة الشهادات', href: '/admin/testimonials', icon: MessageSquare },
     { name: 'إدارة الأسئلة الشائعة', href: '/admin/faq', icon: HelpCircle },
-    { name: 'إدارة رؤية 2030', href: '/admin/vision2030', icon: Target },
+    // { name: 'إدارة رؤية 2030', href: '/admin/vision2030', icon: Target },
     { name: 'إدارة العملاء', href: '/admin/clients', icon: UserCheck },
     { name: 'طلبات عروض الأسعار', href: '/admin/quote-requests', icon: FileText },
     // { name: 'الإعدادات العامة', href: '/admin/settings', icon: Settings },
@@ -47,7 +47,8 @@ const AdminLayout: React.FC = () => {
     if (path === '/admin') {
       return location.pathname === '/admin';
     }
-    return location.pathname.startsWith(path);
+    // Match exact path or nested routes (path + '/') only
+    return location.pathname === path || location.pathname.startsWith(path + '/');
   };
 
   return (
@@ -61,7 +62,7 @@ const AdminLayout: React.FC = () => {
       )}
 
       {/* Sidebar */}
-      <div className={`fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 ${
+      <div className={`fixed inset-y-0 right-0 z-50 w-80 bg-white dark:bg-gray-800 shadow-xl transform transition-transform duration-300 ease-in-out lg:translate-x-0 flex flex-col ${
         sidebarOpen ? 'translate-x-0' : 'translate-x-full'
       }`}>
         {/* Sidebar Header */}

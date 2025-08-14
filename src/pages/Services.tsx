@@ -192,6 +192,7 @@ const Services: React.FC = () => {
      
 
       {/* Comprehensive Services Section */}
+      {/* خدمات الباقات  */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -223,15 +224,17 @@ const Services: React.FC = () => {
                         ))}
                       </ul>
                     )}
-                    {(item.delivery_time || item.price != null) && (
+                    {/* {(item.delivery_time || item.price != null) && (
                       <div className="text-sm text-gray-500 dark:text-gray-400 mb-4">
                         {item.delivery_time ? <div className="mb-1">{item.delivery_time}</div> : null}
                         {item.price != null ? <div className="font-semibold">{item.price} ريال</div> : null}
                       </div>
-                    )}
-                    <a href="/contact" className="inline-block px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">
+                    )} */}
+
+{/* <a href="/contact" className="inline-block px-4 py-2 bg-white dark:bg-gray-700 text-blue-600 dark:text-white font-semibold rounded-lg border border-gray-200 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">
                       {t('choosePackage')}
-                    </a>
+                    </a> */}
+                    
                   </div>
                 ))}
               </div>
@@ -241,6 +244,7 @@ const Services: React.FC = () => {
       </section>
 
       {/* Pricing Packages Section (Dynamic from DB) */}
+      {/* تبع الباقات  */}
       <section className="py-20 bg-white dark:bg-gray-900">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
@@ -288,7 +292,7 @@ const Services: React.FC = () => {
                       ))}
                     </ul>
                     <a
-                      href="/contact"
+                      href={`/quote?selected_package_title=${encodeURIComponent(pkg.title)}&prefill_desc=${encodeURIComponent('أرغب في الحصول على باقة ' + pkg.title)}`}
                       className={
                         isFeatured
                           ? 'mt-auto w-full text-center px-6 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-lg hover:bg-yellow-500 transition-all duration-300'
