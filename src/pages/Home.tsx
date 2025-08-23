@@ -108,7 +108,7 @@ const Home: React.FC = () => {
   useEffect(() => {
     const fetchServices = async () => {
       try {
-        const response = await fetch('http://localhost:3000/api/services');
+        const response = await fetch('https://ebdaadesign.com/api/services');
         if (!response.ok) {
           throw new Error('Failed to fetch services');
         }
