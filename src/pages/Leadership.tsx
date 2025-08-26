@@ -27,7 +27,7 @@ const Leadership: React.FC = () => {
     const fetchLeaders = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/team-members');
+        const response = await fetch('https://ebdaadesign.com/api/team-members');
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
