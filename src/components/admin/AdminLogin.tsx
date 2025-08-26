@@ -68,7 +68,7 @@ const AdminLogin: React.FC = () => {
                   onChange={handleInputChange}
                   required
                   className="w-full pr-12 pl-4 py-4 bg-white/10 border border-white/20 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 text-white placeholder-blue-300 text-right"
-                  placeholder="admin@awjcontracting.sa"
+                  placeholder="admin@ebdaadesign.com"
                 />
               </div>
             </div>
@@ -117,7 +117,7 @@ const AdminLogin: React.FC = () => {
           {/* Demo Credentials */}
           <div className="mt-8 p-4 bg-blue-500/20 border border-blue-500/30 rounded-xl">
             <h3 className="text-sm font-semibold text-blue-200 mb-2">بيانات التجربة:</h3>
-            <p className="text-xs text-blue-300">البريد الإلكتروني: admin@awjcontracting.sa</p>
+            <p className="text-xs text-blue-300">البريد الإلكتروني: admin@ebdaadesign.com</p>
             <p className="text-xs text-blue-300">كلمة المرور: admin123</p>
           </div>
         </div>
