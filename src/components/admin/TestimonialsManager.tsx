@@ -48,7 +48,7 @@ const TeamManager: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3000/api/team-members');
+      const response = await fetch('https://ebdaadesign.com/api/team-members');
       if (!response.ok) {
         throw new Error('Failed to fetch team members');
       }
@@ -64,7 +64,7 @@ const TeamManager: React.FC = () => {
 
   const createTeamMember = async (memberData: Omit<TeamMember, 'id'>) => {
     try {
-      const response = await fetch('http://localhost:3000/api/team-members', {
+      const response = await fetch('https://ebdaadesign.com/api/team-members', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ const TeamManager: React.FC = () => {
 
   const updateTeamMember = async (id: string, memberData: Partial<TeamMember>) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/team-members/${id}`, {
+      const response = await fetch(`https://ebdaadesign.com/api/team-members/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +108,7 @@ const TeamManager: React.FC = () => {
 
   const deleteTeamMember = async (id: string) => {
     try {
-      const response = await fetch(`http://localhost:3000/api/team-members/${id}`, {
+      const response = await fetch(`https://ebdaadesign.com/api/team-members/${id}`, {
         method: 'DELETE',
       });
       if (!response.ok) {

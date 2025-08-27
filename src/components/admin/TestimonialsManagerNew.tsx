@@ -59,7 +59,7 @@ const TestimonialsManagerNew: React.FC = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await fetch('http://localhost:3000/api/reviews');
+      const response = await fetch('https://ebdaadesign.com/api/reviews');
       if (!response.ok) {
         throw new Error('Failed to fetch testimonials');
       }
@@ -94,7 +94,7 @@ const TestimonialsManagerNew: React.FC = () => {
         joinDate: testimonialData.date
       };
 
-      const response = await fetch('http://localhost:3000/api/reviews', {
+      const response = await fetch('https://ebdaadesign.com/api/reviews', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -135,7 +135,7 @@ const TestimonialsManagerNew: React.FC = () => {
         joinDate: testimonialData.date
       };
 
-      const response = await fetch(`http://localhost:3000/api/reviews/${id}`, {
+      const response = await fetch(`https://ebdaadesign.com/api/reviews/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -157,7 +157,7 @@ const TestimonialsManagerNew: React.FC = () => {
   const deleteTestimonial = async (id: string) => {
     try {
       setError(null);
-      const response = await fetch(`http://localhost:3000/api/reviews/${id}`, {
+      const response = await fetch(`https://ebdaadesign.com/api/reviews/${id}`, {
         method: 'DELETE',
       });
 
