@@ -14,7 +14,7 @@ import {
   Loader2,
   AlertCircle
 } from 'lucide-react';
-import { getImageUrl } from '../../utils/image';
+import { } from '../../utils/image';
 
 // 1. Interface Definition
 interface Testimonial {
@@ -373,7 +373,7 @@ const TestimonialsManagerNew: React.FC = () => {
           <div key={testimonial.id} className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg border border-gray-100 dark:border-gray-700 overflow-hidden hover:shadow-xl transition-shadow duration-300">
             <div className="relative">
               <div className="h-48 bg-gradient-to-r from-blue-600 to-purple-600 overflow-hidden">
-                <img src={getImageUrl(testimonial.projectImage)} alt={testimonial.projectName} className="w-full h-full object-cover opacity-80" />
+                <img src={(testimonial.projectImage)} alt={testimonial.projectName} className="w-full h-full object-cover opacity-80" />
               </div>
               <div className="absolute top-4 left-4 flex space-x-2 space-x-reverse">
                 <button onClick={() => handleOpenEditModal(testimonial)} className="p-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition-colors duration-200">

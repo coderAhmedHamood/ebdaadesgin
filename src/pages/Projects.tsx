@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, TrendingUp } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
-import { getImageUrl } from '../utils/image';
+
 
 interface Project {
   id: string;

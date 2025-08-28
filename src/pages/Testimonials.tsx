@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, Quote, Calendar, Building } from 'lucide-react';
-import { getImageUrl } from '../utils/image';
+
 
 interface Testimonial {
   id: string;
