@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Star, Quote, ThumbsUp, MessageCircle, Calendar, Building, User } from 'lucide-react';
+import { Star, Quote, Calendar, Building } from 'lucide-react';
+
 
 interface Testimonial {
   id: string;
@@ -223,7 +224,7 @@ const Testimonials: React.FC = () => {
                     <div className="w-16 h-16 rounded-2xl overflow-hidden flex-shrink-0 shadow-lg bg-gradient-to-br from-blue-500 to-purple-600">
                       {testimonial.image ? (
                         <img
-                          src={testimonial.image}
+                          src={getImageUrl(testimonial.image)}
                           alt={testimonial.name}
                           className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                           onError={(e) => {

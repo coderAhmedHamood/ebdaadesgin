@@ -1,0 +1,11 @@
+
+
+
+
+
+ sudo nano /etc/nginx/sites-available/ebdaaddesign.com
+
+sudo nginx -t
+sudo systemctl reload nginx
+
+var/www/ebdaadesgin/uploads

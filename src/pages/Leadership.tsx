@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Quote, Linkedin, Mail, Briefcase, Award, BrainCircuit, Loader, AlertTriangle } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
+
 interface TeamMember {
   id: string;
   name: string;
@@ -117,7 +118,7 @@ const Leadership: React.FC = () => {
                     <div className="relative bg-white dark:bg-gray-800 p-6 rounded-3xl shadow-xl">
                       <div className="w-64 h-64 mx-auto mb-6 rounded-2xl overflow-hidden shadow-lg">
                         <img
-                          src={leader.image}
+                          src={(leader.image)}
                           alt={leader.name}
                           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                         />
