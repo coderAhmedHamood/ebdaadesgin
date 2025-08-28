@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, Users, TrendingUp } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
+import { getImageUrl } from '../utils/image';
 
 interface Project {
   id: string;
@@ -107,7 +108,7 @@ const Projects: React.FC = () => {
             {projects.map((project) => (
               <div key={project.id} className="group bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transform hover:-translate-y-2 transition-transform duration-300 border border-gray-200 dark:border-gray-700 flex flex-col">
                 <div className="relative">
-                  <img src={project.image || 'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800'} alt={project.title} className="w-full h-56 object-cover" />
+                  <img src={getImageUrl(project.image) || 'https://images.pexels.com/photos/2724749/pexels-photo-2724749.jpeg?auto=compress&cs=tinysrgb&w=800'} alt={project.title} className="w-full h-56 object-cover" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent"></div>
                   
                   <div className="absolute top-4 left-4 flex flex-col space-y-2">
