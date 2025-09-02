@@ -535,7 +535,7 @@ const Home: React.FC = () => {
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center items-center">
             <Link
-              to="/register"
+              to="/contact"
               className="group relative px-12 py-6 bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-bold rounded-2xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-2xl hover:shadow-yellow-500/25 transform hover:-translate-y-2 hover:scale-105 text-lg"
             >
               <span>سجل كعميل</span>
