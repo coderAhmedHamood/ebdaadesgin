@@ -11,3 +11,50 @@ sudo systemctl reload nginx
 var/www/ebdaadesgin/uploads
 
 pm2 restart all
+
+git add .
+git commit -m "تعديل جديد"
+git push
+
+اذا رفض التعجيلات 
+git pull origin main --rebase
+
+git push origin main
+
+
+
+./deploy.sh
+
+#!/bin/bash
+set -e
+
+echo "Starting deployment..."
+
+# اذهب لمجلد المشروع
+cd /root/ebdaadesgin
+
+# جلب آخر التحديثات من Git
+git pull origin main
+
+# تثبيت أي حزم جديدة
+npm install
+
+# بناء المشروع
+chmod +x node_modules/.bin/vite
+npm run build
+
+# إزالة النسخة القديمة ونسخ الجديدة
+sudo rm -rf /var/www/ebdaadesgin/dist
+sudo cp -r dist /var/www/ebdaadesgin/
+sudo chown -R www-data:www-data /var/www/ebdaadesgin/dist
+sudo chmod -R 755 /var/www/ebdaadesgin/dist
+
+# إعادة تشغيل Backend وNginx
+pm2 restart ebdaadesign-api
+sudo systemctl restart nginx
+
+echo "Deployment finished!"
+
+
+
+
