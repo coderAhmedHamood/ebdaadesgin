@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     host: '0.0.0.0',
-    port: 3001,
+    port: 5372,
     proxy: {
       '/api': {
         target: 'https://ebdaadesign.com',
