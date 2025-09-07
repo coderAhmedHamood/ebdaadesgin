@@ -49,7 +49,7 @@ const Footer: React.FC = () => {
             <p className="text-gray-300 mb-6 max-w-md">
               {t('aboutText')}
             </p>
-            <div className="flex space-x-4 rtl:space-x-reverse">
+            {/* <div className="flex space-x-4 rtl:space-x-reverse">
               {socialLinks.map((social) => (
                 <a
                   key={social.label}
@@ -60,7 +60,7 @@ const Footer: React.FC = () => {
                   <social.icon className="w-5 h-5" />
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
 
           {/* Quick Links */}
@@ -88,17 +88,17 @@ const Footer: React.FC = () => {
                 <MapPin className="w-5 h-5 text-blue-400 mt-1 flex-shrink-0" />
                 <div className="text-gray-300">
                   <div>Riyadh, Saudi Arabia</div>
-                  <div>King Fahd Road, Business District</div>
+                  {/* <div>King Fahd Road, Business District</div> */}
                 </div>
               </div>
               <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <Phone className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <div className="text-gray-300">+966 11 123 4567</div>
+                <div className="text-gray-300">+966562428504</div>
               </div>
-              <div className="flex items-center space-x-3 rtl:space-x-reverse">
+              {/* <div className="flex items-center space-x-3 rtl:space-x-reverse">
                 <Mail className="w-5 h-5 text-blue-400 flex-shrink-0" />
-                <div className="text-gray-300">info@awjcontracting.sa</div>
-              </div>
+                <div className="text-gray-300">ahme</div>
+              </div> */}
             </div>
           </div>
         </div>

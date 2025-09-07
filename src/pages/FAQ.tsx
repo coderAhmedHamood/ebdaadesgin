@@ -285,7 +285,7 @@ const FAQ: React.FC = () => {
                 تحدث مباشرة مع أحد خبرائنا
               </p>
               <a
-                href="tel:+966111234567"
+                href="tel:+966966562428504"
                 className="inline-block px-6 py-3 bg-green-600 text-white font-semibold rounded-xl hover:bg-green-700 transition-colors duration-300"
               >
                 اتصل الآن

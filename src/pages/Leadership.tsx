@@ -128,7 +128,7 @@ const Leadership: React.FC = () => {
                         <h3 className="text-2xl font-bold text-gray-900 dark:text-white">{leader.name}</h3>
                         <p className="text-blue-600 dark:text-blue-400 font-semibold">{leader.position}</p>
                       </div>
-                      <div className="mt-6 flex justify-center space-x-4">
+                      {/* <div className="mt-6 flex justify-center space-x-4">
                         {leader.linkedin && (
                           <a href={leader.linkedin} target="_blank" rel="noopener noreferrer" className="text-gray-500 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                             <Linkedin className="w-6 h-6" />
@@ -139,7 +139,7 @@ const Leadership: React.FC = () => {
                             <Mail className="w-6 h-6" />
                           </a>
                         )}
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </div>

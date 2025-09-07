@@ -69,20 +69,8 @@ const Contact: React.FC = () => {
     {
       icon: Phone,
       title: t('phone'),
-      details: ['+966 11 123 4567', '+966 11 987 6543'],
-      action: 'tel:+966111234567'
-    },
-    {
-      icon: Mail,
-      title: t('email'),
-      details: ['info@awjcontracting.sa', 'projects@awjcontracting.sa'],
-      action: 'mailto:info@awjcontracting.sa'
-    },
-    {
-      icon: MapPin,
-      title: t('address'),
-      details: ['King Fahd Road, Business District', 'Riyadh 12345, Saudi Arabia'],
-      action: 'https://maps.google.com'
+      details: ['+966562428504', '+966 11 987 6543'],
+      action: 'tel:+966562428504'
     },
     {
       icon: Clock,
@@ -94,7 +82,6 @@ const Contact: React.FC = () => {
 
   const reasons = [
     'استفسار عن خدمة',
-    'طلب توظيف أو عمل عن بعد',
     'مقترح شراكة',
     'مشكلة في الموقع',
     'سبب آخر - يرجى ذكره'
@@ -333,10 +320,10 @@ const Contact: React.FC = () => {
           </p>
           <div className="flex flex-col sm:flex-row gap-6 justify-center">
             <a
-              href="tel:+966111234567"
+              href="tel:+966562428504"
               className="px-8 py-4 bg-gradient-to-r from-yellow-500 to-yellow-600 text-gray-900 font-semibold rounded-xl hover:from-yellow-400 hover:to-yellow-500 transition-all duration-300 shadow-2xl hover:shadow-yellow-500/25 transform hover:-translate-y-1"
             >
-              {t('callNow')}: +966 11 123 4567
+              {t('callNow')}: +966562428504
             </a>
             <a
               href="mailto:info@awjcontracting.sa"
